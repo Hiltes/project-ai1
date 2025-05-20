@@ -2,19 +2,21 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Models\Restaurant;
 
 Route::get('/', function () {
 
     // Do testów potem zrobi sie razem z baza danych
-    $restaurants = [
-        ['id' => 1, 'name' => 'Pizzeria Napoli', 'description' => 'Autentyczna pizza neapolitańska.'],
-        ['id' => 2, 'name' => 'Sushi World', 'description' => 'Świeże sushi i japońskie specjały.'],
-        ['id' => 3, 'name' => 'Burger House', 'description' => 'Najlepsze burgery w mieście.'],
-        ['id' => 4, 'name' => 'Tandoori Express', 'description' => 'Pikantne dania kuchni indyjskiej.'],
-        ['id' => 5, 'name' => 'Green Vegan', 'description' => 'Zdrowe i pyszne roślinne jedzenie.'],
-        ['id' => 6, 'name' => 'Mediterraneo', 'description' => 'Śródziemnomorskie smaki pełne aromatu.'],
-        ['id' => 7, 'name' => 'Cafe Paris', 'description' => 'Francuskie desery i aromatyczna kawa.'],
-    ];
+    // $restaurants = [
+    //     ['id' => 1, 'name' => 'Pizzeria Napoli', 'description' => 'Autentyczna pizza neapolitańska.'],
+    //     ['id' => 2, 'name' => 'Sushi World', 'description' => 'Świeże sushi i japońskie specjały.'],
+    //     ['id' => 3, 'name' => 'Burger House', 'description' => 'Najlepsze burgery w mieście.'],
+    //     ['id' => 4, 'name' => 'Tandoori Express', 'description' => 'Pikantne dania kuchni indyjskiej.'],
+    //     ['id' => 5, 'name' => 'Green Vegan', 'description' => 'Zdrowe i pyszne roślinne jedzenie.'],
+    //     ['id' => 6, 'name' => 'Mediterraneo', 'description' => 'Śródziemnomorskie smaki pełne aromatu.'],
+    //     ['id' => 7, 'name' => 'Cafe Paris', 'description' => 'Francuskie desery i aromatyczna kawa.'],
+    // ];
+    $restaurants = Restaurant::all();
 
     return view('welcome', compact('restaurants'));
 });
