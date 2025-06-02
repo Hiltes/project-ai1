@@ -36,7 +36,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('home', absolute: false), navigate: true);
     }
 
     protected function ensureIsNotRateLimited(): void
@@ -101,7 +101,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <!-- Remember Me -->
         <flux:checkbox wire:model="remember" :label="__('Zapamiętaj mnie')" />
 
-        <flux:button variant="primary" type="submit" class="w-full">
+        <flux:button variant="primary" type="submit" class="w-full px-4 py-2 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
             {{ __('Zaloguj się') }}
         </flux:button>
     </form>
