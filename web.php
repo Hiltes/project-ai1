@@ -25,7 +25,10 @@ Route::get('/', function () {
 
 Route::get('/restaurant/{id}', function ($id) {
     $restaurant = \App\Models\Restaurant::findOrFail($id);
-    return view('restaurant', compact('restaurant'));
+
+    $reviews = $restaurant->reviews()->latest()->get();
+    return view('restaurant', compact('restaurant', 'reviews'));
+
 });
 
 
