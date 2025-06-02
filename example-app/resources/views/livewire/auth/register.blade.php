@@ -1,99 +1,91 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Validate;
+use Livewire\Volt\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Livewire\Attributes\Layout;
-use Livewire\Volt\Component;
+use App\Models\User;
 
 new #[Layout('components.layouts.auth')] class extends Component {
+    #[Validate('required|string|max:255')]
     public string $name = '';
+
+    #[Validate('required|email|unique:users,email')]
     public string $email = '';
+
+    #[Validate('required|string|min:8')]
     public string $password = '';
+
+    #[Validate('required|string|same:password')]
     public string $password_confirmation = '';
 
-    /**
-     * Handle an incoming registration request.
-     */
     public function register(): void
     {
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+        $this->validate();
+
+        $user = User::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => Hash::make($this->password),
+            'role' => 'customer',
         ]);
-
-        $validated['password'] = Hash::make($validated['password']);
-
-        event(new Registered(($user = User::create($validated))));
 
         Auth::login($user);
 
-        $this->redirectIntended(route('dashboard', absolute: false), navigate: true);
+        $this->redirect(route('home'), navigate: true);
     }
 }; ?>
 
-<div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+<div class="w-full sm:max-w-md bg-white p-6 sm:p-8 rounded-lg shadow">
 
-    <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+    <x-auth-header :title="__('Zarejestruj się')" :description="__('Utwórz nowe konto w serwisie')" />
 
     <form wire:submit="register" class="flex flex-col gap-6">
-        <!-- Name -->
+
         <flux:input
             wire:model="name"
-            :label="__('Name')"
+            :label="__('Imię i nazwisko')"
             type="text"
             required
-            autofocus
             autocomplete="name"
-            :placeholder="__('Full name')"
+            placeholder="Jan Kowalski"
         />
 
-        <!-- Email Address -->
         <flux:input
             wire:model="email"
-            :label="__('Email address')"
+            :label="__('Email')"
             type="email"
             required
             autocomplete="email"
             placeholder="email@example.com"
         />
 
-        <!-- Password -->
         <flux:input
             wire:model="password"
-            :label="__('Password')"
+            :label="__('Hasło')"
             type="password"
             required
             autocomplete="new-password"
-            :placeholder="__('Password')"
-            viewable
+            placeholder="******"
         />
 
-        <!-- Confirm Password -->
         <flux:input
             wire:model="password_confirmation"
-            :label="__('Confirm password')"
+            :label="__('Powtórz hasło')"
             type="password"
             required
             autocomplete="new-password"
-            :placeholder="__('Confirm password')"
-            viewable
+            placeholder="******"
         />
 
-        <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full">
-                {{ __('Create account') }}
-            </flux:button>
-        </div>
+        <flux:button type="submit" variant="primary" class="w-full px-4 py-2 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
+            {{ __('Zarejestruj się') }}
+        </flux:button>
     </form>
 
-    <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-        {{ __('Already have an account?') }}
-        <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+    <div class="text-center text-sm text-zinc-600 dark:text-zinc-400 mt-6">
+        Masz już konto?
+        <flux:link :href="route('login')" wire:navigate>Zaloguj się</flux:link>
     </div>
 </div>
