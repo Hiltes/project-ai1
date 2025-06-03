@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Models\Restaurant;
+use App\Http\Controllers\CartController;
+
 
 Route::get('/', function () {
 
