@@ -49,17 +49,21 @@ use App\Services\CartService;
 
 Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, CartService $cart) {
     $item = MenuItem::with('restaurant')->find($id);
-    
+
     if (!$item) {
         return "Menu item not found";
     }
 
     $quantity = max(1, (int)$quantity);
     $cart->add($item, $quantity);
-    
+
     return "Added: {$item->name} (Quantity: {$quantity})";
 });
 
 // TESTOWO CART ^^^^
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
+});
 
 require __DIR__.'/auth.php';
