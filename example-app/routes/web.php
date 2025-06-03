@@ -3,19 +3,32 @@
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Models\Restaurant;
+use App\Http\Controllers\RestaurantController;
+=======
 use App\Http\Controllers\CartController;
+
+ 
 
 
 Route::get('/', function () {
+
 
     $restaurants = Restaurant::all();
 
     return view('welcome', compact('restaurants'));
 })->name('home');
 
+
+
 Route::get('/restaurant/{id}', function ($id) {
-    return "Strona restauracji o ID: " . $id;
+    $restaurant = \App\Models\Restaurant::findOrFail($id);
+
+    $reviews = $restaurant->reviews()->latest()->get();
+    return view('restaurant', compact('restaurant', 'reviews'));
+
 });
+
+
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -36,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
+
+
 
 Route::prefix('cart')->group(function () {
     Route::post('/add/{menuItemId}', [CartController::class, 'add'])->name('cart.add');
@@ -67,5 +82,6 @@ Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, C
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
 });
+
 
 require __DIR__.'/auth.php';
