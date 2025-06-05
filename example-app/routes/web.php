@@ -4,10 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Models\Restaurant;
 use App\Http\Controllers\RestaurantController;
-=======
 use App\Http\Controllers\CartController;
+use Illuminate\Http\Request;
 
- 
 
 
 Route::get('/', function () {
@@ -40,6 +39,7 @@ Volt::route('/forgot-password', 'auth.forgot-password')->middleware('guest')->na
 Volt::route('/reset-password', 'auth.reset-password')->middleware('guest')->name('password.reset');
 Volt::route('/verify-email', 'auth.verify-email')->middleware('auth')->name('verification.notice');
 Volt::route('/confirm-password', 'auth.confirm-password')->middleware('auth')->name('password.confirm');
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -77,11 +77,26 @@ Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, C
     return "Added: {$item->name} (Quantity: {$quantity})";
 });
 
-// TESTOWO CART ^^^^
+// Autoryzacja użytkowników:
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
 });
+
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    Route::view('/customer', 'customer.dashboard')->name('customer.dashboard');
+});
+
+Route::get('/panel', function (Request $request) {
+    $user = $request->user();
+    $role = $user->role;
+
+    return match ($role) {
+        'admin' => redirect()->route('admin.dashboard'),
+        'customer' => redirect()->route('customer.dashboard'),
+        default => abort(403),
+    };
+})->middleware('auth')->name('user.panel');
 
 
 require __DIR__.'/auth.php';
