@@ -16,9 +16,9 @@
                 <a href="{{ route('admin.menu_items.index') }}" class="text-[#1fa37a] font-medium hover:underline">Przejdź do dań</a>
             </div>
             <div class="bg-white p-6 rounded-lg shadow text-left">
-                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Ulubione restauracje</h3>
-                <p class="text-gray-600 mb-4">Zarządzaj ulubionymi miejscami.</p>
-                <a href="#" class="text-[#1fa37a] font-medium hover:underline">Zobacz ulubione</a>
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Zarządzanie użytkownikami</h3>
+                <p class="text-gray-600 mb-4">Zarządzaj użytkownikami na platformie</p>
+                <a href="{{ route('admin.users.index') }}" class="text-[#1fa37a] font-medium hover:underline">Przejdź do zardządzania użytkownikami</a>
             </div>
             <div class="bg-white p-6 rounded-lg shadow text-left">
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Ustawienia profilu</h3>
