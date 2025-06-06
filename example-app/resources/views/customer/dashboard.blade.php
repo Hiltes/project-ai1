@@ -1,34 +1,32 @@
-<!DOCTYPE html>
-<html lang="pl" class="h-full">
-<head>
-    <meta charset="UTF-8">
-    <title>Panel użytkownika - FoodiePlatform</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gray-100 text-gray-900 font-sans flex flex-col min-h-screen">
+<x-layouts.app :title="'Panel użytkownika - FoodiePlatform'">
+    <section class="max-w-7xl mx-auto px-6 py-12 text-center">
+        <h2 class="text-4xl font-extrabold mb-4" style="color: #1fa37a;">
+            Panel użytkownika
+        </h2>
+        <p class="text-gray-700 text-lg">
+            Witaj, {{ auth()->user()->name }}! Oto twój panel użytkownika
+        </p>
+    </section>
 
-    @include('components.header')
+     <section class="max-w-7xl mx-auto px-6 py-6">
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            <div class="bg-white p-6 rounded-lg shadow text-left">
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Zamówienia</h3>
+                <p class="text-gray-600 mb-4">Sprawdź historię i status swoich zamówień.</p>
+                <a href="#" class="text-[#1fa37a] font-medium hover:underline">Przejdź do zamówień</a>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow text-left">
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Ulubione restauracje</h3>
+                <p class="text-gray-600 mb-4">Zarządzaj ulubionymi miejscami.</p>
+                <a href="#" class="text-[#1fa37a] font-medium hover:underline">Zobacz ulubione</a>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow text-left">
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Ustawienia profilu</h3>
+                <p class="text-gray-600 mb-4">Edytuj swoje dane osobowe i dane kontaktowe.</p>
+                <a href="{{ route('profile.edit') }}" class="text-[#1fa37a] font-medium hover:underline">Edytuj Profil</a>
+            </div>
+        </div>
+    </section>
+</x-layouts.app>
 
-    <main class="flex-grow">
-        <section class="max-w-7xl mx-auto px-6 py-12 text-center">
-            <h2 class="text-4xl font-extrabold mb-4" style="color: #1fa37a;">
-                Panel użytkownika
-            </h2>
-            <p class="text-gray-700 text-lg">
-                Witaj, {{ auth()->user()->name }}! Oto twój panel użytkownika
-            </p>
-        </section>
 
-        <section class="max-w-7xl mx-auto px-6 py-6 text-left">
-            <h3 class="text-2xl font-bold mb-6">Zarządzanie</h3>
-            <ul class="space-y-4">
-                <li><a href="#" class="text-[#1fa37a] font-medium hover:underline">Restauracje</a></li>
-                <li><a href="#" class="text-[#1fa37a] font-medium hover:underline">Twoje zamówienia</a></li>
-            </ul>
-        </section>
-    </main>
-
-    @include('components.footer')
-
-</body>
-</html>

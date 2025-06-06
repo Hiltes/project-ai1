@@ -1,114 +1,39 @@
-<?php
+<x-layouts.app>
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold mb-6 text-center text-accent">Edytuj dane użytkownika</h1>
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
-use Livewire\Volt\Component;
-
-new class extends Component {
-    public string $name = '';
-    public string $email = '';
-
-    /**
-     * Mount the component.
-     */
-    public function mount(): void
-    {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
-    }
-
-    /**
-     * Update the profile information for the currently authenticated user.
-     */
-    public function updateProfileInformation(): void
-    {
-        $user = Auth::user();
-
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-
-            'email' => [
-                'required',
-                'string',
-                'lowercase',
-                'email',
-                'max:255',
-                Rule::unique(User::class)->ignore($user->id)
-            ],
-        ]);
-
-        $user->fill($validated);
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        $this->dispatch('profile-updated', name: $user->name);
-    }
-
-    /**
-     * Send an email verification notification to the current user.
-     */
-    public function resendVerificationNotification(): void
-    {
-        $user = Auth::user();
-
-        if ($user->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('dashboard', absolute: false));
-
-            return;
-        }
-
-        $user->sendEmailVerificationNotification();
-
-        Session::flash('status', 'verification-link-sent');
-    }
-}; ?>
-
-<section class="w-full">
-    @include('partials.settings-heading')
-
-    <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
-        <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
-            <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
+        <form method="POST" action="{{ route('profile.update') }}" class="space-y-6 bg-white p-6 rounded shadow">
+            @csrf
+            @method('PATCH')
 
             <div>
-                <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
-
-                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail &&! auth()->user()->hasVerifiedEmail())
-                    <div>
-                        <flux:text class="mt-4">
-                            {{ __('Your email address is unverified.') }}
-
-                            <flux:link class="text-sm cursor-pointer" wire:click.prevent="resendVerificationNotification">
-                                {{ __('Click here to re-send the verification email.') }}
-                            </flux:link>
-                        </flux:text>
-
-                        @if (session('status') === 'verification-link-sent')
-                            <flux:text class="mt-2 font-medium !dark:text-green-400 !text-green-600">
-                                {{ __('A new verification link has been sent to your email address.') }}
-                            </flux:text>
-                        @endif
-                    </div>
-                @endif
+                <label for="name" class="block text-sm font-medium text-gray-700">Imię i nazwisko</label>
+                <input type="text" name="name" id="name" value="{{ old('name', auth()->user()->name) }}"
+                       class="px-4 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-accent focus:border-accent sm:text-sm" />
             </div>
 
-            <div class="flex items-center gap-4">
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
-                </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Adres e-mail</label>
+                <input type="email" name="email" id="email" value="{{ old('email', auth()->user()->email) }}"
+                       class="px-4 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-accent focus:border-accent sm:text-sm" />
+            </div>
 
-                <x-action-message class="me-3" on="profile-updated">
-                    {{ __('Saved.') }}
-                </x-action-message>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Numer telefonu</label>
+                <input type="text" name="phone" id="phone" value="{{ old('phone', auth()->user()->phone) }}"
+                       class="px-4 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-accent focus:border-accent sm:text-sm" />
+            </div>
+
+            <div>
+                <label for="address" class="block text-sm font-medium text-gray-700">Adres</label>
+                <input type="text" name="address" id="address" value="{{ old('address', auth()->user()->address) }}"
+                       class="px-4 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-accent focus:border-accent sm:text-sm" />
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit"
+                        class="px-6 py-2 bg-accent text-white rounded hover:bg-green-700 transition">Zapisz zmiany</button>
             </div>
         </form>
-
-        <livewire:settings.delete-user-form />
-    </x-settings.layout>
-</section>
+    </div>
+</x-layouts.app>
