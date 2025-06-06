@@ -11,9 +11,9 @@
     <section class="max-w-7xl mx-auto px-6 py-6">
         <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             <div class="bg-white p-6 rounded-lg shadow text-left">
-                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Zamówienia</h3>
-                <p class="text-gray-600 mb-4">Sprawdź historię i status swoich zamówień.</p>
-                <a href="#" class="text-[#1fa37a] font-medium hover:underline">Przejdź do zamówień</a>
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Edycja Dań</h3>
+                <p class="text-gray-600 mb-4">Wyświetl listę dań, panel administratora</p>
+                <a href="{{ route('admin.menu_items.index') }}" class="text-[#1fa37a] font-medium hover:underline">Przejdź do dań</a>
             </div>
             <div class="bg-white p-6 rounded-lg shadow text-left">
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Ulubione restauracje</h3>
