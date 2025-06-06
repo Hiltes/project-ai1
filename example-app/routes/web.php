@@ -9,6 +9,7 @@ use App\Services\CartService;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\UserController;
 
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
@@ -63,11 +64,22 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin/menu_items/edit', 'admin.menu_items.edit')->name('admin.menu_items.edit');
     Route::view('/admin/menu_items/index', 'admin.menu_items.index')->name('admin.menu_items.index');
     Route::view('/admin/menu_items/show', 'admin.menu_items.show')->name('admin.menu_items.show');
+
+    // CRUD userów
+    Route::view('/admin/users/create', 'admin.users.create')->name('admin.users.create');
+    Route::view('/admin/users/edit', 'admin.users.edit')->name('admin.users.edit');
+    Route::view('/admin/users/index', 'admin.users.index')->name('admin.users.index');
+    Route::view('/admin/users/show', 'admin.users.show')->name('admin.users.show');
+
+
 });
 
     //Podpięcie kontrolera do CRUDA dań
 Route::resource('admin/menu_items', MenuItemController::class)
      ->names('admin.menu_items');
+
+// Resource controller
+    Route::resource('admin/users', UserController::class)->names('admin.users');
 
 // Ustawienia (Livewire + Volt)
 Route::middleware(['auth'])->group(function () {
