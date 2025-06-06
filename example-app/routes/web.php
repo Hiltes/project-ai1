@@ -8,7 +8,7 @@ use App\Models\MenuItem;
 use App\Services\CartService;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\MenuItemController;
 
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
@@ -50,6 +50,24 @@ Volt::route('/forgot-password', 'auth.forgot-password')->middleware('guest')->na
 Volt::route('/reset-password', 'auth.reset-password')->middleware('guest')->name('password.reset');
 Volt::route('/verify-email', 'auth.verify-email')->middleware('auth')->name('verification.notice');
 Volt::route('/confirm-password', 'auth.confirm-password')->middleware('auth')->name('password.confirm');
+
+
+// Autoryzacja użytkowników:
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
+
+
+    //Routing dla CRUD dań
+    Route::view('/admin/menu_items/create', 'admin.menu_items.create')->name('admin.menu_items.create');
+    Route::view('/admin/menu_items/edit', 'admin.menu_items.edit')->name('admin.menu_items.edit');
+    Route::view('/admin/menu_items/index', 'admin.menu_items.index')->name('admin.menu_items.index');
+    Route::view('/admin/menu_items/show', 'admin.menu_items.show')->name('admin.menu_items.show');
+});
+
+    //Podpięcie kontrolera do CRUDA dań
+Route::resource('admin/menu_items', MenuItemController::class)
+     ->names('admin.menu_items');
 
 // Ustawienia (Livewire + Volt)
 Route::middleware(['auth'])->group(function () {
