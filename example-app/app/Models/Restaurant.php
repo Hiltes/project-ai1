@@ -39,4 +39,6 @@ class Restaurant extends Model
     {
         return $this->hasMany(OpeningHour::class);
     }
+
+    
 }

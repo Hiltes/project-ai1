@@ -4,12 +4,11 @@
         <nav class="flex items-center space-x-4">
             <a href="{{ url('/') }}" class="text-black hover:underline">Strona główna</a>
             <a href="{{ route('items.index')}}" class="text-black hover:underline">Wyszukiwarka potraw</a>
-            <a href="{{ url('/restauracje') }}">
+            <a href="{{ route('restaurants.index')}}" class="text-black hover:underline">Wyszukiwarka restauracji</a>
 
 
             @auth
                 <a href="{{ route('user.panel') }}" class="text-black hover:underline">Panel użytkownika</a>
-                <a href="{{ route('cart.show') }}" class="text-black hover:underline">Koszyk</a>
 
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
