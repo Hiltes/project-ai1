@@ -127,3 +127,10 @@ Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('ite
 // Routing do wyszukiwarki restauracji
 Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
 require __DIR__.'/auth.php';
+
+
+// Routing do rankingu dań
+
+Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+

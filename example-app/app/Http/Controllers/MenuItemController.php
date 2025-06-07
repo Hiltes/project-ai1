@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MenuItem;
 use App\Models\Restaurant;
+use App\Models\ItemReview;
+use Illuminate\Support\Facades\DB;
 
 class MenuItemController extends Controller
 {
@@ -69,8 +71,8 @@ class MenuItemController extends Controller
             $query->whereRaw('LOWER(category) = ?', [strtolower($request->category)]);
         }
 
-        // Sortowanie
-        $sortOption = $request->get('sort', 'newest'); // domyślnie najnowsze
+
+        $sortOption = $request->get('sort', 'newest');
         switch ($sortOption) {
             case 'price_asc':
                 $query->orderBy('price', 'asc');
@@ -85,7 +87,7 @@ class MenuItemController extends Controller
                 $query->orderBy('name', 'desc');
                 break;
             default:
-                $query->orderBy('created_at', 'desc'); // newest
+                $query->orderBy('created_at', 'desc');
                 break;
         }
 
@@ -137,10 +139,11 @@ class MenuItemController extends Controller
 
     //Wyświetlanie dla użytkownika niezalogowanego / zalogowanego
     public function show2(MenuItem $menuItem)
-{
-    $menuItem->load('restaurant');
-    return view('items.show', compact('menuItem'));
-}
+    {
+        $menuItem->load('restaurant');
+        return view('items.show', compact('menuItem'));
+    }
+
 
 
     public function edit(MenuItem $menuItem)
@@ -183,4 +186,31 @@ class MenuItemController extends Controller
             return back()->with('error', 'Wystąpił błąd podczas usuwania dania: ' . $e->getMessage());
         }
     }
+
+
+
+public function ranking()
+{
+    $thisMonth = now()->startOfMonth();
+
+    $rankingItems = MenuItem::with('restaurant')
+        ->withCount([
+            'reviews as ratings_count' => function ($query) use ($thisMonth) {
+                $query->where('created_at', '>=', $thisMonth);
+            },
+        ])
+        ->withAvg('reviews', 'rating')
+        ->whereHas('reviews', function ($query) use ($thisMonth) {
+            $query->where('created_at', '>=', $thisMonth);
+        })
+        ->orderByDesc('reviews_avg_rating')
+        ->limit(10)
+        ->get();
+
+    return view('items.ranking', compact('rankingItems'));
+}
+
+
+
+
 }

@@ -13,11 +13,15 @@ class MenuItem extends Model
         'restaurant_id',
         'category',
         'rating',
-        'rating_count',   
+        'rating_count',
     ];
 
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
+    }
+    public function reviews()
+    {
+        return $this->hasMany(ItemReview::class);
     }
 }
