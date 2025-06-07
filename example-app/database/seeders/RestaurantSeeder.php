@@ -23,6 +23,7 @@ class RestaurantSeeder extends Seeder
             'phone' => '111222333',
             'description' => 'Najlepsze jedzenie w mieście',
             'is_active' => true,
+            'delivery_fee' => 5.00,
         ]);
 
         Restaurant::create([
@@ -32,6 +33,7 @@ class RestaurantSeeder extends Seeder
             'phone' => '222333444',
             'description' => 'Świeże sushi i japońskie specjały.',
             'is_active' => true,
+            'delivery_fee' => 8.00,
         ]);
 
         Restaurant::create([
@@ -41,6 +43,7 @@ class RestaurantSeeder extends Seeder
             'phone' => '333444555',
             'description' => 'Najlepsze burgery w mieście.',
             'is_active' => true,
+            'delivery_fee' => 6.50,
         ]);
     }
 }

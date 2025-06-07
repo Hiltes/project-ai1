@@ -21,7 +21,7 @@ class MenuItemSeeder extends Seeder
             'name' => 'Burger Wołowy',
             'description' => 'Wołowina, sałata, sos',
             'price' => 29.50,
-            'restaurant_id' => 1,
+            'restaurant_id' => 3,
             'category' => 'Fast Food',
         ]);
     }

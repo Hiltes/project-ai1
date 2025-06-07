@@ -26,6 +26,7 @@ class CartService
         if (!isset($cart['restaurants'][$restaurantId])) {
             $cart['restaurants'][$restaurantId] = [
                 'restaurant_name' => $item->restaurant->name,
+                'delivery_fee' => $item->restaurant->delivery_fee,
                 'items' => []
             ];
         }
@@ -63,6 +64,16 @@ class CartService
         }
     }
 
+    public function updateQuantity($restaurantId, $menuItemId, $quantity)
+    {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart['restaurants'][$restaurantId]['items'][$menuItemId])) {
+            $cart['restaurants'][$restaurantId]['items'][$menuItemId]['quantity'] = $quantity;
+            session()->put('cart', $cart);
+        }
+    }
+
     public function clear()
     {
         Session::forget($this->sessionKey);
@@ -77,6 +88,7 @@ class CartService
             foreach ($restaurant['items'] as $item) {
                 $sum += $item['price'] * $item['quantity'];
             }
+            $sum += $restaurant['delivery_fee'] ?? 0;
         }
 
         return $sum;
