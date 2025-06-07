@@ -9,6 +9,7 @@
 
             @auth
                 <a href="{{ route('user.panel') }}" class="text-black hover:underline">Panel użytkownika</a>
+                <a href="{{ route('cart.show') }}" class="text-black hover:underline">Koszyk</a>
 
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf

@@ -8,6 +8,18 @@
                 </div>
             </div>
 
+            @if (session('success'))
+                <div class="mb-4 p-4 bg-green-200 text-green-800 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="mb-4 p-4 bg-red-200 text-red-800 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="bg-white shadow overflow-hidden sm:rounded-2xl">
                 <div class="border-b border-gray-100 px-6 py-4">
                     <form method="GET" action="{{ route('items.index') }}">
@@ -84,11 +96,13 @@
                                 {{ $item->restaurant->name ?? 'Brak danych' }}
                             </span>
                         </div>
-
-                        <a href="#"
-                            class=" col-span-2 inline-flex items-center text-center  px-2 py-4 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition duration-200">
-                            Dodaj do koszyka
-                        </a>
+                        <form method="POST" action="{{ route('cart.add', $item->id) }}" class="col-span-2">
+                            @csrf
+                            <button type="submit"
+                                class="w-full inline-flex items-center justify-center text-center px-2 py-4 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition duration-200">
+                                Dodaj do koszyka
+                            </button>
+                        </form>
                     </div>
 
                 @empty

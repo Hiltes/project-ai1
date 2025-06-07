@@ -63,6 +63,16 @@ class CartService
         }
     }
 
+    public function updateQuantity($restaurantId, $menuItemId, $quantity)
+    {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart['restaurants'][$restaurantId]['items'][$menuItemId])) {
+            $cart['restaurants'][$restaurantId]['items'][$menuItemId]['quantity'] = $quantity;
+            session()->put('cart', $cart);
+        }
+    }
+
     public function clear()
     {
         Session::forget($this->sessionKey);
