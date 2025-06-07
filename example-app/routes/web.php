@@ -11,6 +11,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TotpController;
+use App\Http\Middleware\EnsureTotpIsVerified;
 
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
@@ -82,13 +84,27 @@ Route::resource('admin/menu_items', MenuItemController::class)
 // Resource controller
     Route::resource('admin/users', UserController::class)->names('admin.users');
 
-// Ustawienia (Livewire + Volt)
+// Ustawienia
 Route::middleware(['auth'])->group(function () {
     Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings/profile', [ProfileController::class, 'update'])->name('profile.update');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+
+    //Totp
+    Route::get('/settings/totp', [TotpController::class, 'show'])->name('totp.show');
+    Route::post('/settings/totp/enable', [TotpController::class, 'enable'])->name('totp.enable');
+    Route::delete('/settings/totp/disable', [TotpController::class, 'disable'])->name('totp.disable');
+
 });
+
+Route::middleware(['auth', EnsureTotpIsVerified::class])->group(function () {
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+});
+
+Volt::route('/verify-totp', 'auth.verify-totp')
+    ->name('totp.verify')
+    ->middleware('web');
 
 // Panel admina
 Route::middleware(['auth', 'role:admin'])->group(function () {

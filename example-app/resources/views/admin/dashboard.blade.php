@@ -26,6 +26,11 @@
                 <a href="{{ route('profile.edit') }}" class="text-[#1fa37a] font-medium hover:underline">Edytuj Profil</a>
 
             </div>
+            <div class="bg-white p-6 rounded-lg shadow text-left">
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Weryfikacja 2-etapowa</h3>
+                <p class="text-gray-600 mb-4">Dodaj weryfikację 2-etapową przy logowaniu</p>
+                <a href="{{ route('totp.show') }}" class="text-[#1fa37a] font-medium hover:underline">Dodaj weryfikację</a>
+            </div>
         </div>
     </section>
 </x-layouts.app>
