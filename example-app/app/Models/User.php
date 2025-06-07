@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use OTPHP\TOTP;
 
 class User extends Authenticatable
 {
@@ -25,6 +26,8 @@ class User extends Authenticatable
         'password',
         'address',
         'role',
+        'totp_secret',
+        'totp_confirmed',
     ];
 
     /**
@@ -47,6 +50,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'totp_confirmed' => 'boolean',
         ];
     }
 
@@ -59,5 +63,14 @@ class User extends Authenticatable
             ->explode(' ')
             ->map(fn (string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
+    }
+
+
+    /**
+     * Totp function
+     */
+    public function getTotpInstance(): ?TOTP
+    {
+        return $this->totp_secret ? TOTP::create($this->totp_secret) : null;
     }
 }

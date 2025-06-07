@@ -13,17 +13,17 @@
             <div class="bg-white p-6 rounded-lg shadow text-left">
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Zamówienia</h3>
                 <p class="text-gray-600 mb-4">Sprawdź historię i status swoich zamówień.</p>
-                <a href="#" class="text-[#1fa37a] font-medium hover:underline">Przejdź do zamówień</a>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow text-left">
-                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Ulubione restauracje</h3>
-                <p class="text-gray-600 mb-4">Zarządzaj ulubionymi miejscami.</p>
-                <a href="#" class="text-[#1fa37a] font-medium hover:underline">Zobacz ulubione</a>
+                <a href="{{ route('orders.index') }}" class="text-[#1fa37a] font-medium hover:underline">Przejdź do zamówień</a>
             </div>
             <div class="bg-white p-6 rounded-lg shadow text-left">
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Ustawienia profilu</h3>
                 <p class="text-gray-600 mb-4">Edytuj swoje dane osobowe i dane kontaktowe.</p>
                 <a href="{{ route('profile.edit') }}" class="text-[#1fa37a] font-medium hover:underline">Edytuj Profil</a>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow text-left">
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Weryfikacja 2-etapowa</h3>
+                <p class="text-gray-600 mb-4">Dodaj weryfikację 2-etapową przy logowaniu</p>
+                <a href="{{ route('totp.show') }}" class="text-[#1fa37a] font-medium hover:underline">Dodaj weryfikację</a>
             </div>
         </div>
     </section>
