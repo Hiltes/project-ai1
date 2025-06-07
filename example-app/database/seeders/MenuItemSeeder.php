@@ -14,6 +14,7 @@ class MenuItemSeeder extends Seeder
             'description' => 'Klasyczna pizza z mozzarellą',
             'price' => 24.99,
             'restaurant_id' => 1,
+            'category' => 'Pizza',
         ]);
 
         MenuItem::create([
@@ -21,6 +22,7 @@ class MenuItemSeeder extends Seeder
             'description' => 'Wołowina, sałata, sos',
             'price' => 29.50,
             'restaurant_id' => 1,
+            'category' => 'Fast Food',
         ]);
     }
 }

@@ -30,10 +30,17 @@
                     <p class="text-sm text-gray-600"><strong class="text-gray-800">Restauracja:</strong>
                         {{ $menuItem->restaurant->name ?? 'Brak danych' }}</p>
                 </div>
+
+                <div class="pt-2">
+                    <a href="#"
+                       class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition duration-200">
+                        Dodaj do koszyka
+                    </a>
+                </div>
             </div>
 
             <div class="mt-6">
-                <a href="{{ route('admin.menu_items.index') }}"
+                <a href="{{ route('items.index') }}"
                    class="inline-flex items-center text-emerald-700 hover:text-emerald-900 font-medium text-sm hover:underline transition">
                     ← Powrót do listy dań
                 </a>

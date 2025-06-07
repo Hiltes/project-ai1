@@ -15,13 +15,17 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
 
+            $table->string('category');
+
             $table->foreignId('restaurant_id')
                   ->constrained()
                   ->onDelete('cascade'); // Kasuje pozycje menu przy usunięciu restauracji
+
             $table->timestamps();
 
             $table->index('restaurant_id');
             $table->index('name');
+            $table->index('category'); // dodany indeks dla szybszych zapytań po kategorii
         });
     }
 
