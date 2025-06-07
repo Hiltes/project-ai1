@@ -118,4 +118,10 @@ Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, C
     return "Added: {$item->name} (Quantity: {$quantity})";
 });
 
+
+// Routing do wyszukiwarki dań
+Route::get('/items', [MenuItemController::class, 'index2'])->name('items.index');
+Route::get('/items/{item}', [MenuItemController::class, 'show2'])->name('items.show');
+
+
 require __DIR__.'/auth.php';

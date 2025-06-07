@@ -3,6 +3,7 @@
         <h1 class="text-2xl font-bold text-black">🍽️ FoodiePlatform</h1>
         <nav class="flex items-center space-x-4">
             <a href="{{ url('/') }}" class="text-black hover:underline">Strona główna</a>
+            <a href="{{ route('items.index')}}" class="text-black hover:underline">Wyszukiwarka potraw</a>
             <a href="{{ url('/restauracje') }}">
 
 
