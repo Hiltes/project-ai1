@@ -63,13 +63,20 @@ class OrderController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
+        $userId = auth()->id();
 
-        $orders = Order::with('restaurant', 'items.menuItem')
-            ->where('user_id', $user->id)
-            ->orderByDesc('created_at')
+        $activeOrders = Order::with('restaurant', 'items.menuItem')
+            ->where('user_id', $userId)
+            ->where('status', '!=', 'delivered')
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('orders.index', compact('orders'));
+        $pastOrders = Order::with('restaurant', 'items.menuItem')
+            ->where('user_id', $userId)
+            ->where('status', 'delivered')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('orders.index', compact('activeOrders', 'pastOrders'));
     }
 }
