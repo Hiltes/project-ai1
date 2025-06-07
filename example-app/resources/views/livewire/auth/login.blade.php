@@ -36,8 +36,21 @@ new #[Layout('components.layouts.auth')] class extends Component {
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
+        $user = Auth::user();
+
+        // Jeśli TOTP jest włączony, przekieruj do ekranu weryfikacji
+        if ($user->totp_enabled) {
+            session(['totp:id' => $user->id]); // zapisz ID, ale nie zalogowuj całkowicie
+            Auth::logout(); // wyloguj tymczasowo do momentu podania kodu
+
+            $this->redirect(route('totp.verify'), navigate: true);
+            return;
+        }
+
+        // Brak TOTP – normalny redirect
         $this->redirectIntended(default: route('home', absolute: false), navigate: true);
     }
+
 
     protected function ensureIsNotRateLimited(): void
     {
