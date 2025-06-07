@@ -133,7 +133,8 @@ Route::middleware(['auth'])->group(function () {
 
 // Routing do wyszukiwarki dań
 Route::get('/items', [MenuItemController::class, 'index2'])->name('items.index');
-Route::get('/items/{item}', [MenuItemController::class, 'show2'])->name('items.show');
+Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('items.show');
+
 
 
 require __DIR__.'/auth.php';

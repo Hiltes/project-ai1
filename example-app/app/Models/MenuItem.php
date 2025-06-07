@@ -12,6 +12,8 @@ class MenuItem extends Model
         'price',
         'restaurant_id',
         'category',
+        'rating',
+        'rating_count',   
     ];
 
     public function restaurant()

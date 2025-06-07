@@ -33,71 +33,71 @@ class MenuItemController extends Controller
     ];
 
 
-public function index(Request $request)
-{
-    $query = MenuItem::with('restaurant');
+    public function index(Request $request)
+    {
+        $query = MenuItem::with('restaurant');
 
-    if ($request->filled('search')) {
-        $search = strtolower($request->search);
-        $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+        if ($request->filled('search')) {
+            $search = strtolower($request->search);
+            $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+        }
+
+        if ($request->filled('category')) {
+            $query->whereRaw('LOWER(category) = ?', [strtolower($request->category)]);
+        }
+
+        $items = $query->latest()->paginate(10);
+
+        return view('admin.menu_items.index', [
+            'items' => $items,
+            'categories' => $this->categories,
+            'selectedCategory' => $request->category,
+        ]);
     }
-
-    if ($request->filled('category')) {
-        $query->whereRaw('LOWER(category) = ?', [strtolower($request->category)]);
-    }
-
-    $items = $query->latest()->paginate(10);
-
-    return view('admin.menu_items.index', [
-        'items' => $items,
-        'categories' => $this->categories,
-        'selectedCategory' => $request->category,
-    ]);
-}
 
 
     public function index2(Request $request)
-{
-    $query = MenuItem::with('restaurant');
+    {
+        $query = MenuItem::with('restaurant');
 
-    if ($request->filled('search')) {
-        $search = strtolower($request->search);
-        $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+        if ($request->filled('search')) {
+            $search = strtolower($request->search);
+            $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+        }
+
+        if ($request->filled('category')) {
+            $query->whereRaw('LOWER(category) = ?', [strtolower($request->category)]);
+        }
+
+        // Sortowanie
+        $sortOption = $request->get('sort', 'newest'); // domyślnie najnowsze
+        switch ($sortOption) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc'); // newest
+                break;
+        }
+
+        $items = $query->paginate(10);
+
+        return view('items.index', [
+            'items' => $items,
+            'categories' => $this->categories,
+            'selectedCategory' => $request->category,
+            'selectedSort' => $sortOption,
+        ]);
     }
-
-    if ($request->filled('category')) {
-        $query->whereRaw('LOWER(category) = ?', [strtolower($request->category)]);
-    }
-
-    // Sortowanie
-    $sortOption = $request->get('sort', 'newest'); // domyślnie najnowsze
-    switch ($sortOption) {
-        case 'price_asc':
-            $query->orderBy('price', 'asc');
-            break;
-        case 'price_desc':
-            $query->orderBy('price', 'desc');
-            break;
-        case 'name_asc':
-            $query->orderBy('name', 'asc');
-            break;
-        case 'name_desc':
-            $query->orderBy('name', 'desc');
-            break;
-        default:
-            $query->orderBy('created_at', 'desc'); // newest
-            break;
-    }
-
-    $items = $query->paginate(10);
-
-    return view('items.index', [
-        'items' => $items,
-        'categories' => $this->categories,
-        'selectedCategory' => $request->category,
-        'selectedSort' => $sortOption,
-    ]);
-}
 
     public function create()
     {
@@ -135,11 +135,13 @@ public function index(Request $request)
     }
 
 
-    //Wyświetlanie dla użytkownika niezalogowanego
+    //Wyświetlanie dla użytkownika niezalogowanego / zalogowanego
     public function show2(MenuItem $menuItem)
-    {
-        return view('items.show', compact('menuItem'));
-    }
+{
+    $menuItem->load('restaurant');
+    return view('items.show', compact('menuItem'));
+}
+
 
     public function edit(MenuItem $menuItem)
     {

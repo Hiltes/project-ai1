@@ -1,3 +1,4 @@
+
 <x-layouts.app :title="'Lista Dań'">
     <main class="flex-grow">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -56,12 +57,11 @@
                 </div>
 
                 @forelse($items as $item)
-                    <div
-                        class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-gray-100 hover:bg-gray-50 transition duration-150 ease-in-out">
+                    <div onclick="window.location='{{ route('items.show', $item) }}';"
+                        class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-gray-100 hover:bg-gray-50 transition duration-150 ease-in-out cursor-pointer">
                         <div class="col-span-5 md:col-span-4">
                             <div class="flex items-center">
-                                <div
-                                    class="flex-shrink-0 h-10 w-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                <div class="flex-shrink-0 h-10 w-10 bg-emerald-100 rounded-lg flex items-center justify-center">
                                     <svg class="h-6 w-6 text-emerald-600" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -69,10 +69,9 @@
                                     </svg>
                                 </div>
                                 <div class="ml-4">
-                                    <a href="{{ route('items.show', $item) }}"
-                                        class="text-lg font-semibold text-emerald-700 hover:text-emerald-900 hover:underline">
+                                    <div class="text-lg font-semibold text-emerald-700 group-hover:text-emerald-900 group-hover:underline">
                                         {{ $item->name }}
-                                    </a>
+                                    </div>
                                     <p class="text-base text-gray-600 mt-1">
                                         {{ \Illuminate\Support\Str::words(strip_tags($item->description), 20, ' [...]') ?: 'Brak opisu' }}
                                     </p>
@@ -91,12 +90,12 @@
                         </div>
 
                         <div class="hidden md:col-span-2 md:block text-sm">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                 {{ $item->restaurant->name ?? 'Brak danych' }}
                             </span>
                         </div>
-                        <form method="POST" action="{{ route('cart.add', $item->id) }}" class="col-span-2">
+
+                        <form method="POST" action="{{ route('cart.add', $item->id) }}" class="col-span-2 z-10" onclick="event.stopPropagation()">
                             @csrf
                             <button type="submit"
                                 class="w-full inline-flex items-center justify-center text-center px-2 py-4 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition duration-200">
@@ -124,9 +123,7 @@
             <div class="mt-6 flex justify-center">
                 <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center space-x-2">
                     @if ($items->onFirstPage())
-                        <span
-                            class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-xl cursor-not-allowed">←
-                            Poprzednia</span>
+                        <span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-xl cursor-not-allowed">← Poprzednia</span>
                     @else
                         <a href="{{ $items->previousPageUrl() }}"
                             class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition">
@@ -136,11 +133,9 @@
 
                     @foreach ($items->links()->elements[0] as $page => $url)
                         @if ($page == $items->currentPage())
-                            <span
-                                class="px-4 py-2 text-sm font-semibold text-emerald-700 bg-emerald-100 rounded-xl">{{ $page }}</span>
+                            <span class="px-4 py-2 text-sm font-semibold text-emerald-700 bg-emerald-100 rounded-xl">{{ $page }}</span>
                         @else
-                            <a href="{{ $url }}"
-                                class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl transition">{{ $page }}</a>
+                            <a href="{{ $url }}" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl transition">{{ $page }}</a>
                         @endif
                     @endforeach
 
@@ -150,9 +145,7 @@
                             Następna →
                         </a>
                     @else
-                        <span
-                            class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-xl cursor-not-allowed">Następna
-                            →</span>
+                        <span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-xl cursor-not-allowed">Następna →</span>
                     @endif
                 </nav>
             </div>
