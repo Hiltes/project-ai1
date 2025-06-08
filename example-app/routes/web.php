@@ -13,12 +13,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\AdminRestaurantController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\TotpController;
 use App\Http\Controllers\OrderController;
 use App\Http\Middleware\EnsureTotpIsVerified;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\RestaurantReviewController;
+
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
 Route::view('/test-404', 'errors.404');
@@ -192,3 +193,28 @@ Route::get('/customer', [CustomerController::class, 'index'])
 // Routing do rankingu dań
 
 Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+
+use App\Http\Controllers\ReviewController;
+
+Route::middleware(['auth'])->group(function () {
+    // Wyświetla listę pozycji do oceny
+    Route::get('/reviews/pending', [ReviewController::class, 'pending'])
+        ->name('reviews.pending');
+    // Obsługa wysłania oceny
+    Route::post('/reviews', [ReviewController::class, 'store'])
+        ->name('reviews.store');
+});
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/reviews/restaurants/to-rate', [RestaurantReviewController::class, 'pending'])
+        ->name('reviews.restaurants.to-rate');
+
+    Route::post('/reviews/restaurants', [RestaurantReviewController::class, 'store'])
+        ->name('reviews.restaurants.store');
+});
+
+
+
