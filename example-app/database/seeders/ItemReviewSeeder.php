@@ -6,10 +6,12 @@ use Illuminate\Database\Seeder;
 use App\Models\ItemReview;
 use App\Models\MenuItem;
 
+
 class ItemReviewSeeder extends Seeder
 {
     public function run()
     {
+
         $users = [1, 2];
         $ratings = [3, 4, 5];
 
@@ -24,5 +26,6 @@ class ItemReviewSeeder extends Seeder
                 ]);
             }
         }
+
     }
 }

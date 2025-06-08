@@ -7,7 +7,9 @@ use App\Models\MenuItem;
 use App\Models\Restaurant;
 use App\Models\ItemReview;
 use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Storage;
+
 
 class MenuItemController extends Controller
 {
@@ -233,4 +235,31 @@ public function destroy(MenuItem $menuItem)
 
         return view('items.ranking', compact('rankingItems'));
     }
+
+
+
+public function ranking()
+{
+    $thisMonth = now()->startOfMonth();
+
+    $rankingItems = MenuItem::with('restaurant')
+        ->withCount([
+            'reviews as ratings_count' => function ($query) use ($thisMonth) {
+                $query->where('created_at', '>=', $thisMonth);
+            },
+        ])
+        ->withAvg('reviews', 'rating')
+        ->whereHas('reviews', function ($query) use ($thisMonth) {
+            $query->where('created_at', '>=', $thisMonth);
+        })
+        ->orderByDesc('reviews_avg_rating')
+        ->limit(10)
+        ->get();
+
+    return view('items.ranking', compact('rankingItems'));
+}
+
+
+
+
 }
