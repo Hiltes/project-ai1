@@ -19,9 +19,13 @@ return new class extends Migration
             $table->string('name');
             $table->text('address');
             $table->string('phone');
+            $table->string('type')->nullable();
+
             $table->text('description')->nullable();
 
             $table->boolean('is_active')->default(true);
+
+            $table->decimal('delivery_fee', 8, 2)->default(0);
 
             $table->timestamps();
 

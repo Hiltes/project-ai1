@@ -13,6 +13,8 @@ class Restaurant extends Model
         'phone',
         'description',
         'is_active',
+        'delivery_fee',
+        'type',
     ];
 
     public function owner()
@@ -39,4 +41,6 @@ class Restaurant extends Model
     {
         return $this->hasMany(OpeningHour::class);
     }
+
+    
 }

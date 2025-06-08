@@ -10,8 +10,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\AdminRestaurantController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TotpController;
+use App\Http\Controllers\OrderController;
 use App\Http\Middleware\EnsureTotpIsVerified;
 
 // Testowe strony błędów
@@ -55,7 +58,6 @@ Volt::route('/reset-password', 'auth.reset-password')->middleware('guest')->name
 Volt::route('/verify-email', 'auth.verify-email')->middleware('auth')->name('verification.notice');
 Volt::route('/confirm-password', 'auth.confirm-password')->middleware('auth')->name('password.confirm');
 
-
 // Autoryzacja użytkowników:
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -74,6 +76,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin/users/index', 'admin.users.index')->name('admin.users.index');
     Route::view('/admin/users/show', 'admin.users.show')->name('admin.users.show');
 
+    // CRUD Restauracji
+    Route::view('/admin/restaurants/create', 'admin.restaurants.create')->name('admin.restaurants.create');
+    Route::view('/admin/restaurants/edit', 'admin.restaurants.edit')->name('admin.restaurants.edit');
+    Route::view('/admin/restaurants/index', 'admin.restaurants.index')->name('admin.restaurants.index');
+    Route::view('/admin/restaurants/show', 'admin.restaurants.show')->name('admin.restaurants.show');
+
 
 });
 
@@ -83,6 +91,10 @@ Route::resource('admin/menu_items', MenuItemController::class)
 
 // Resource controller
     Route::resource('admin/users', UserController::class)->names('admin.users');
+
+Route::resource('admin/restaurants', AdminRestaurantController::class)
+     ->names('admin.restaurants');
+
 
 // Ustawienia
 Route::middleware(['auth'])->group(function () {
@@ -117,23 +129,49 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 });
 
 // Koszyk
-Route::middleware(['auth', 'role:customer'])->group(function () {
+Route::prefix('cart')->group(function () {
     Route::post('/add/{menuItemId}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/remove/{restaurantId}/{menuItemId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/clear', [CartController::class, 'clear'])->name('cart.clear');
-    Route::patch('/update/{restaurantId}/{menuItemId}', [CartController::class, 'update'])->name('cart.update');
-    Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
+    Route::get('/', [CartController::class, 'show'])->name('cart.show');
 });
 
-// Zamawianie
-Route::middleware(['auth'])->group(function () {
-    Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+// Testowe dodawanie do koszyka
+Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, CartService $cart) {
+    $item = MenuItem::with('restaurant')->find($id);
+    if (!$item) {
+        return "Menu item not found";
+    }
+
+    $cart->add($item, max(1, (int)$quantity));
+    return "Added: {$item->name} (Quantity: {$quantity})";
 });
+
 
 // Routing do wyszukiwarki dań
 Route::get('/items', [MenuItemController::class, 'index2'])->name('items.index');
-Route::get('/items/{item}', [MenuItemController::class, 'show2'])->name('items.show');
+Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('items.show');
 
+
+// Routing do wyszukiwarki restauracji
+Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
 
 require __DIR__.'/auth.php';
+
+
+
+Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+
+
+Route::get('/totp', [TotpController::class, 'show'])->name('totp.show');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+
+Route::get('/customer', [CustomerController::class, 'index'])
+    ->middleware(['auth', 'role:customer'])
+    ->name('customer.dashboard');
+// Routing do rankingu dań
+
+Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
