@@ -15,7 +15,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TotpController;
 use App\Http\Controllers\OrderController;
 use App\Http\Middleware\EnsureTotpIsVerified;
-
+use App\Http\Controllers\SalesController;
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
 Route::view('/test-404', 'errors.404');
@@ -84,6 +84,9 @@ Route::resource('admin/menu_items', MenuItemController::class)
 // Resource controller
     Route::resource('admin/users', UserController::class)->names('admin.users');
 
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('sales', [SalesController::class, 'index'])->name('admin.sales.index');
+});
 
 
 // Ustawienia
