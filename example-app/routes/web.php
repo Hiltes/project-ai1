@@ -82,7 +82,7 @@ Route::resource('admin/menu_items', MenuItemController::class)
 
 // Resource controller
     Route::resource('admin/users', UserController::class)->names('admin.users');
-    
+
 
 
 // Ustawienia (Livewire + Volt)
@@ -141,3 +141,8 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/customer', [CustomerController::class, 'index'])
     ->middleware(['auth', 'role:customer'])
     ->name('customer.dashboard');
+// Routing do rankingu dań
+
+Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+
