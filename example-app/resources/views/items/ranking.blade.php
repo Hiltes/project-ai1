@@ -17,28 +17,34 @@
                             #{{ $index + 1 }}
                         </div>
 
-                        <div class="col-span-4 md:col-span-5">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-                                    <svg class="h-6 w-6 text-emerald-600" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 6h16M4 12h16M4 18h16" />
-                                    </svg>
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-lg font-semibold text-emerald-700 group-hover:text-emerald-900 group-hover:underline">
-                                        {{ $item->name }}
+                        {{-- Nazwa + zdjęcie --}}
+                        <div class="col-span-5 md:col-span-4 flex items-center gap-4">
+                            {{-- Miniaturka --}}
+                            <div class="flex-shrink-0 w-20 h-20 bg-gray-100 rounded-lg overflow-hidden">
+                                @if($item->image)
+                                    <img src="{{ asset('storage/' . $item->image) }}"
+                                         alt="{{ $item->name }}"
+                                         class="object-cover w-full h-full">
+                                @else
+                                    <div class="flex items-center justify-center text-gray-400 text-xs w-full h-full">
+                                        brak zdjęcia
                                     </div>
-                                </div>
+                                @endif
                             </div>
 
-                            {{-- Mobile rating block --}}
-                            <div class="block md:hidden text-sm text-gray-600 mt-2">
-                                <span class="font-medium text-emerald-700">Ocena:</span>
-                                {{ number_format($item->reviews_avg_rating, 1) }}/5
-                                <span class="mx-2">•</span>
-                                <span class="text-gray-500 text-xs">Opinie: {{ $item->ratings_count }}</span>
+                            {{-- Nazwa i ocena mobilna --}}
+                            <div>
+                                <div class="text-lg font-semibold text-emerald-700 group-hover:text-emerald-900 group-hover:underline">
+                                    {{ $item->name }}
+                                </div>
+
+                                {{-- Mobile rating --}}
+                                <div class="block md:hidden text-sm text-gray-600 mt-1">
+                                    <span class="font-medium text-emerald-700">Ocena:</span>
+                                    {{ number_format($item->reviews_avg_rating, 1) }}/5
+                                    <span class="mx-2">•</span>
+                                    <span class="text-gray-500 text-xs">Opinie: {{ $item->ratings_count }}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -52,7 +58,7 @@
                             {{ number_format($item->price, 2) }} zł
                         </div>
 
-                        {{-- Desktop rating block --}}
+                        {{-- Desktop rating --}}
                         <div class="hidden md:col-span-2 md:block text-sm text-gray-700 space-y-1">
                             <div>
                                 <span class="font-medium text-emerald-700">Ocena:</span>

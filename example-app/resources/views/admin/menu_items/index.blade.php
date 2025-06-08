@@ -48,14 +48,19 @@
                             class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-gray-100 hover:bg-gray-50 transition duration-150 ease-in-out">
                             <div class="col-span-5 md:col-span-4">
                                 <div class="flex items-center">
-                                    <div
-                                        class="flex-shrink-0 h-10 w-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-                                        <svg class="h-6 w-6 text-emerald-600" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 6h16M4 12h16M4 18h16" />
-                                        </svg>
-                                    </div>
+                                    @if ($item->image)
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
+                                            class="h-16 w-16 object-cover rounded-xl shadow-sm border border-gray-200">
+                                    @else
+                                        <div
+                                            class="h-16 w-16 bg-emerald-100 rounded-xl flex items-center justify-center">
+                                            <svg class="h-6 w-6 text-emerald-600" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 6h16M4 12h16M4 18h16" />
+                                            </svg>
+                                        </div>
+                                    @endif
                                     <div class="ml-4">
                                         <a href="{{ route('admin.menu_items.show', $item) }}"
                                             class="text-lg font-semibold text-emerald-700 hover:text-emerald-900 hover:underline">

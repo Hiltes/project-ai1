@@ -7,6 +7,7 @@ use App\Models\MenuItem;
 use App\Models\Restaurant;
 use App\Models\ItemReview;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MenuItemController extends Controller
 {
@@ -118,7 +119,14 @@ class MenuItemController extends Controller
             'price'         => 'required|numeric|min:0',
             'restaurant_id' => 'required|integer|exists:restaurants,id',
             'category'      => 'required|string|in:' . implode(',', array_map('addslashes', $this->categories)),
+            'image'         => 'nullable|image|mimes:jpeg,jpg|dimensions:width=500,height=500',
         ]);
+
+        // Obsługa uploadu
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('menu_images', 'public');
+            $data['image'] = $path;
+        }
 
         try {
             MenuItem::create($data);
@@ -164,7 +172,18 @@ class MenuItemController extends Controller
             'price'         => 'required|numeric|min:0',
             'restaurant_id' => 'required|exists:restaurants,id',
             'category'      => 'required|string|in:' . implode(',', array_map('addslashes', $this->categories)),
+            'image'         => 'nullable|image|mimes:jpeg,jpg|dimensions:width=500,height=500',  // DODANO
         ]);
+
+        // Obsługa zmiany obrazka
+        if ($request->hasFile('image')) {
+            // opcjonalnie: usunięcie starego pliku
+            if ($menuItem->image) {
+                Storage::disk('public')->delete($menuItem->image);
+            }
+            $path = $request->file('image')->store('menu_items', 'public');
+            $data['image'] = $path;
+        }
 
         try {
             $menuItem->update($data);
@@ -176,41 +195,42 @@ class MenuItemController extends Controller
         }
     }
 
-    public function destroy(MenuItem $menuItem)
-    {
-        try {
-            $menuItem->delete();
-            return redirect()->route('admin.menu_items.index')
-                ->with('success', 'Danie zostało pomyślnie usunięte.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Wystąpił błąd podczas usuwania dania: ' . $e->getMessage());
-        }
-    }
-
-
-
-public function ranking()
+public function destroy(MenuItem $menuItem)
 {
-    $thisMonth = now()->startOfMonth();
+    try {
+        if ($menuItem->image) {
+            Storage::disk('public')->delete($menuItem->image);
+        }
 
-    $rankingItems = MenuItem::with('restaurant')
-        ->withCount([
-            'reviews as ratings_count' => function ($query) use ($thisMonth) {
-                $query->where('created_at', '>=', $thisMonth);
-            },
-        ])
-        ->withAvg('reviews', 'rating')
-        ->whereHas('reviews', function ($query) use ($thisMonth) {
-            $query->where('created_at', '>=', $thisMonth);
-        })
-        ->orderByDesc('reviews_avg_rating')
-        ->limit(10)
-        ->get();
+        $menuItem->delete();
 
-    return view('items.ranking', compact('rankingItems'));
+        return redirect()->route('admin.menu_items.index')
+            ->with('success', 'Danie zostało pomyślnie usunięte.');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Wystąpił błąd podczas usuwania dania: ' . $e->getMessage());
+    }
 }
 
 
 
+    public function ranking()
+    {
+        $thisMonth = now()->startOfMonth();
 
+        $rankingItems = MenuItem::with('restaurant')
+            ->withCount([
+                'reviews as ratings_count' => function ($query) use ($thisMonth) {
+                    $query->where('created_at', '>=', $thisMonth);
+                },
+            ])
+            ->withAvg('reviews', 'rating')
+            ->whereHas('reviews', function ($query) use ($thisMonth) {
+                $query->where('created_at', '>=', $thisMonth);
+            })
+            ->orderByDesc('reviews_avg_rating')
+            ->limit(10)
+            ->get();
+
+        return view('items.ranking', compact('rankingItems'));
+    }
 }
