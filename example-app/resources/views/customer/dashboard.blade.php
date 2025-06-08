@@ -7,6 +7,12 @@
             Witaj, {{ auth()->user()->name }}! Oto twój panel użytkownika
         </p>
     </section>
+    @if(isset($restaurantToReview))
+    <div class="bg-yellow-100 text-yellow-800 p-4 rounded-xl shadow mb-6 max-w-4xl mx-auto text-center">
+         Nie zapomnij ocenić swojej wizyty w <strong>{{ $restaurantToReview->name }}</strong>!
+        <a href="{{ route('restaurants.index') }}" class="underline text-yellow-700 ml-2">Wystaw opinię</a>
+    </div>
+	@endif
 
      <section class="max-w-7xl mx-auto px-6 py-6">
         <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
