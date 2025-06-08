@@ -59,12 +59,7 @@
                         {{ $menuItem->restaurant->name ?? 'Brak danych' }}</p>
                 </div>
 
-                <div class="pt-4">
-                    <a href="#"
-                        class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition duration-200 font-semibold shadow-sm">
-                        Dodaj do koszyka
-                    </a>
-                </div>
+                
             </div>
 
             <div class="mt-6 ">

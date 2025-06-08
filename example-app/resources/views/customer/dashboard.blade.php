@@ -40,12 +40,12 @@
                 <p class="text-gray-600 mb-4">Wystaw ocenę zamówionym daniom, które jeszcze nie oceniłeś.</p>
                 <a href="{{ route('reviews.pending') }}" class="text-[#1fa37a] font-medium hover:underline">Oceń dania</a>
             </div>
+
                 <div class="bg-white p-6 rounded-lg shadow text-left">
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Oceń restauracje</h3>
                 <p class="text-gray-600 mb-4">Podziel się opinią o restauracjach, w których składałeś zamówienia.</p>
                 <a href="{{ route('reviews.restaurants.to-rate') }}" class="text-[#1fa37a] font-medium hover:underline">Oceń restauracje</a>
             </div>
-
         </div>
     </section>
 </x-layouts.app>

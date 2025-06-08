@@ -207,7 +207,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/reviews/restaurants/to-rate', [RestaurantReviewController::class, 'pending'])
         ->name('reviews.restaurants.to-rate');
@@ -215,6 +214,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reviews/restaurants', [RestaurantReviewController::class, 'store'])
         ->name('reviews.restaurants.store');
 });
-
 
 
