@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\CustomerController;
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
 Route::view('/test-404', 'errors.404');
@@ -71,8 +72,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin/users/index', 'admin.users.index')->name('admin.users.index');
     Route::view('/admin/users/show', 'admin.users.show')->name('admin.users.show');
 
-
 });
+
+
 
     //Podpięcie kontrolera do CRUDA dań
 Route::resource('admin/menu_items', MenuItemController::class)
@@ -80,6 +82,8 @@ Route::resource('admin/menu_items', MenuItemController::class)
 
 // Resource controller
     Route::resource('admin/users', UserController::class)->names('admin.users');
+    
+
 
 // Ustawienia (Livewire + Volt)
 Route::middleware(['auth'])->group(function () {
@@ -126,4 +130,14 @@ Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('ite
 
 // Routing do wyszukiwarki restauracji
 Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
+
 require __DIR__.'/auth.php';
+
+
+Route::get('/totp', [TotpController::class, 'show'])->name('totp.show');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+
+Route::get('/customer', [CustomerController::class, 'index'])
+    ->middleware(['auth', 'role:customer'])
+    ->name('customer.dashboard');
