@@ -10,9 +10,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\TotpController;
-use App\Http\Middleware\EnsureTotpIsVerified;
-
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\CustomerController;
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
 Route::view('/test-404', 'errors.404');
@@ -73,8 +72,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin/users/index', 'admin.users.index')->name('admin.users.index');
     Route::view('/admin/users/show', 'admin.users.show')->name('admin.users.show');
 
-
 });
+
+
 
     //Podpięcie kontrolera do CRUDA dań
 Route::resource('admin/menu_items', MenuItemController::class)
@@ -83,27 +83,15 @@ Route::resource('admin/menu_items', MenuItemController::class)
 // Resource controller
     Route::resource('admin/users', UserController::class)->names('admin.users');
 
-// Ustawienia
+
+
+// Ustawienia (Livewire + Volt)
 Route::middleware(['auth'])->group(function () {
     Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings/profile', [ProfileController::class, 'update'])->name('profile.update');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-
-    //Totp
-    Route::get('/settings/totp', [TotpController::class, 'show'])->name('totp.show');
-    Route::post('/settings/totp/enable', [TotpController::class, 'enable'])->name('totp.enable');
-    Route::delete('/settings/totp/disable', [TotpController::class, 'disable'])->name('totp.disable');
-
 });
-
-Route::middleware(['auth', EnsureTotpIsVerified::class])->group(function () {
-    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
-});
-
-Volt::route('/verify-totp', 'auth.verify-totp')
-    ->name('totp.verify')
-    ->middleware('web');
 
 // Panel admina
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -137,7 +125,30 @@ Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, C
 
 // Routing do wyszukiwarki dań
 Route::get('/items', [MenuItemController::class, 'index2'])->name('items.index');
-Route::get('/items/{item}', [MenuItemController::class, 'show2'])->name('items.show');
+Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('items.show');
 
+
+// Routing do wyszukiwarki restauracji
+Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
 
 require __DIR__.'/auth.php';
+
+
+
+Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+
+
+Route::get('/totp', [TotpController::class, 'show'])->name('totp.show');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+
+Route::get('/customer', [CustomerController::class, 'index'])
+    ->middleware(['auth', 'role:customer'])
+    ->name('customer.dashboard');
+// Routing do rankingu dań
+
+Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+
+

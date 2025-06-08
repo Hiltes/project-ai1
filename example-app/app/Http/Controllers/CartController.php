@@ -18,26 +18,28 @@ class CartController extends Controller
     public function add($menuItemId, Request $request)
     {
         $item = MenuItem::findOrFail($menuItemId);
+        $quantity = $request->input('quantity', 1);
 
-        $added = $this->cart->add($item, $request->input('quantity', 1));
+        $added = $this->cart->add($item, $quantity); 
 
-        if (!$added) {
-            return redirect()->back()->with('error', 'Koszyk zawiera dania z innej restauracji. Wyczyść go, aby dodać nowe.');
-        }
-
-        return redirect()->back()->with('success', 'Dodano do koszyka.');
+        return redirect()->route('items.index')->with('success', 'Dodano do koszyka.');
     }
 
     public function remove($restaurantId, $menuItemId)
     {
         $this->cart->remove($restaurantId, $menuItemId);
-        return redirect()->route('cart.show')->with('success', 'Usunięto z koszyka.');
+
+        return redirect()->route('cart.show')
+            ->with('success', 'Usunięto z koszyka.');
     }
+
 
     public function clear()
     {
         $this->cart->clear();
-        return redirect()->route('cart.show')->with('success', 'Koszyk wyczyszczony.');
+
+        return redirect()->route('cart.show')
+            ->with('success', 'Koszyk wyczyszczony.');
     }
 
     public function show()
@@ -46,5 +48,18 @@ class CartController extends Controller
         $total = $this->cart->total();
 
         return view('cart.show', compact('cart', 'total'));
+    }
+
+    public function update($restaurantId, $menuItemId, Request $request)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1|max:10',
+        ]);
+
+        $quantity = $request->input('quantity');
+
+        $this->cart->updateQuantity($restaurantId, $menuItemId, $quantity);
+
+        return redirect()->route('cart.show')->with('success', 'Zaktualizowano ilość w koszyku.');
     }
 }
