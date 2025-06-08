@@ -140,6 +140,11 @@ Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'show'])->name('cart.show');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+});
+
 // Testowe dodawanie do koszyka
 Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, CartService $cart) {
     $item = MenuItem::with('restaurant')->find($id);
