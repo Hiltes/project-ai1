@@ -1,0 +1,120 @@
+<x-layouts.app :title="'Dodaj Restaurację'">
+    <main class="flex-grow">
+        <section class="max-w-7xl mx-auto px-6 py-12 text-center">
+            <h2 class="text-4xl font-extrabold mb-4" style="color: #1fa37a;">
+                Dodaj nową restaurację
+            </h2>
+        </section>
+
+        <form method="POST" action="{{ route('admin.restaurants.store') }}" 
+              class="bg-white shadow-md rounded-2xl p-8 space-y-6 max-w-2xl mx-auto"
+              id="restaurantForm">
+            @csrf
+            @method('POST')
+
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="text-red-600">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-800">Nazwa restauracji *</label>
+                <input id="name" name="name" type="text" value="{{ old('name') }}" required
+                       class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
+                              focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+            </div>
+
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-800">Opis</label>
+                <textarea id="description" name="description" rows="4"
+                          class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
+                                 focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">{{ old('description') }}</textarea>
+            </div>
+
+            <div>
+                <label for="address" class="block text-sm font-medium text-gray-800">Adres *</label>
+                <input id="address" name="address" type="text" value="{{ old('address') }}" required
+                       class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
+                              focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+            </div>
+
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-800">Telefon</label>
+                <input id="phone" name="phone" type="text" value="{{ old('phone') }}"
+                       class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
+                              focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+            </div>
+
+            <div>
+                <label for="delivery_fee" class="block text-sm font-medium text-gray-800">Opłata za dostawę (zł)</label>
+                <input id="delivery_fee" name="delivery_fee" type="number" step="0.01" min="0"
+                       value="{{ old('delivery_fee', 0) }}"
+                       class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
+                              focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+            </div>
+
+            <div>
+                <label for="type" class="block text-sm font-medium text-gray-800">Typ kuchni *</label>
+                <select id="type" name="type" required
+                        class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
+                               focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+                    <option value="">-- Wybierz typ kuchni --</option>
+                    @foreach($types as $type)
+                        <option value="{{ $type }}" @if(old('type') == $type) selected @endif>
+                            {{ $type }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="flex items-center">
+                <input id="is_active" name="is_active" type="checkbox" value="1" class="mr-2"
+                       @if(old('is_active', true)) checked @endif>
+                <label for="is_active" class="text-sm text-gray-800">Restauracja aktywna</label>
+            </div>
+
+            <div class="text-center">
+                <button type="submit"
+                        class="bg-[#1fa37a] text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#178a66] transition duration-200 shadow-md">
+                    Dodaj restaurację
+                </button>
+            </div>
+        </form>
+    </main>
+
+    @push('scripts')
+        <script>
+            document.getElementById('restaurantForm').addEventListener('submit', function(e) {
+                
+                const name = document.getElementById('name').value.trim();
+                const address = document.getElementById('address').value.trim();
+                const type = document.getElementById('type').value;
+                
+                if (!name || !address || !type) {
+                    e.preventDefault();
+                    alert('Proszę wypełnić wszystkie wymagane pola oznaczone *');
+                    return false;
+                }
+                
+                return true;
+            });
+        </script>
+    @endpush
+</x-layouts.app>

@@ -11,6 +11,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\AdminRestaurantController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\TotpController;
@@ -76,11 +78,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin/users/index', 'admin.users.index')->name('admin.users.index');
     Route::view('/admin/users/show', 'admin.users.show')->name('admin.users.show');
 
+    // CRUD Restauracji
+    Route::view('/admin/restaurants/create', 'admin.restaurants.create')->name('admin.restaurants.create');
+    Route::view('/admin/restaurants/edit', 'admin.restaurants.edit')->name('admin.restaurants.edit');
+    Route::view('/admin/restaurants/index', 'admin.restaurants.index')->name('admin.restaurants.index');
+    Route::view('/admin/restaurants/show', 'admin.restaurants.show')->name('admin.restaurants.show');
+
     // CRUD zamówień
     Route::view('/admin/orders/create', 'admin.orders.create')->name('admin.orders.create');
     Route::view('/admin/orders/index', 'admin.orders.index')->name('admin.orders.index');
     Route::view('/admin/orders/edit', 'admin.orders.edit')->name('admin.orders.edit');
     Route::view('/admin/orders/show', 'admin.orders.show')->name('admin.orders.show');
+
 });
 
 
@@ -92,12 +101,20 @@ Route::resource('admin/menu_items', MenuItemController::class)
 // Resource controller
     Route::resource('admin/users', UserController::class)->names('admin.users');
 
+
+Route::resource('admin/restaurants', AdminRestaurantController::class)
+     ->names('admin.restaurants');
+
+
+// Ustawienia
+
 Route::resource('admin/orders', AdminOrderController::class)->names('admin.orders');
 
 // Ustawienia (Livewire + Volt)
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('sales', [SalesController::class, 'index'])->name('admin.sales.index');
 });
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -139,11 +156,18 @@ Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, C
 Route::get('/items', [MenuItemController::class, 'index2'])->name('items.index');
 Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('items.show');
 
+
+
+// Routing do wyszukiwarki restauracji
+Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
+
+
 // Routing do wyszukiwarki restauracji
 Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
 
 // Routing do wyszukiwarki restauracji
 Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
+
 
 require __DIR__.'/auth.php';
 

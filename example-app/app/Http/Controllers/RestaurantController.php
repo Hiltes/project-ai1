@@ -46,7 +46,11 @@ class RestaurantController extends Controller
 
         $restaurants = $query->paginate(10);
 
+
+        return view('restaurant.index', [
+
         return view('restaurants.index', [
+
             'restaurants' => $restaurants,
             'types' => $this->types,
             'selectedType' => $request->type,

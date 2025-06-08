@@ -14,6 +14,8 @@ class Restaurant extends Model
         'description',
         'is_active',
         'delivery_fee',
+        'type',
+
     ];
 
     public function owner()
