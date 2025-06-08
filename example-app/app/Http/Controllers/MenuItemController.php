@@ -197,21 +197,21 @@ class MenuItemController extends Controller
         }
     }
 
-public function destroy(MenuItem $menuItem)
-{
-    try {
-        if ($menuItem->image) {
-            Storage::disk('public')->delete($menuItem->image);
+    public function destroy(MenuItem $menuItem)
+    {
+        try {
+            if ($menuItem->image) {
+                Storage::disk('public')->delete($menuItem->image);
+            }
+
+            $menuItem->delete();
+
+            return redirect()->route('admin.menu_items.index')
+                ->with('success', 'Danie zostało pomyślnie usunięte.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Wystąpił błąd podczas usuwania dania: ' . $e->getMessage());
         }
-
-        $menuItem->delete();
-
-        return redirect()->route('admin.menu_items.index')
-            ->with('success', 'Danie zostało pomyślnie usunięte.');
-    } catch (\Exception $e) {
-        return back()->with('error', 'Wystąpił błąd podczas usuwania dania: ' . $e->getMessage());
     }
-}
 
 
 
@@ -235,29 +235,6 @@ public function destroy(MenuItem $menuItem)
 
         return view('items.ranking', compact('rankingItems'));
     }
-
-
-
-public function ranking()
-{
-    $thisMonth = now()->startOfMonth();
-
-    $rankingItems = MenuItem::with('restaurant')
-        ->withCount([
-            'reviews as ratings_count' => function ($query) use ($thisMonth) {
-                $query->where('created_at', '>=', $thisMonth);
-            },
-        ])
-        ->withAvg('reviews', 'rating')
-        ->whereHas('reviews', function ($query) use ($thisMonth) {
-            $query->where('created_at', '>=', $thisMonth);
-        })
-        ->orderByDesc('reviews_avg_rating')
-        ->limit(10)
-        ->get();
-
-    return view('items.ranking', compact('rankingItems'));
-}
 
 
 
