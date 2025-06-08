@@ -18,6 +18,8 @@ use App\Http\Controllers\TotpController;
 use App\Http\Controllers\OrderController;
 use App\Http\Middleware\EnsureTotpIsVerified;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\RestaurantReviewController;
+
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
 Route::view('/test-404', 'errors.404');
@@ -203,3 +205,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store'])
         ->name('reviews.store');
 });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/reviews/restaurants/to-rate', [RestaurantReviewController::class, 'pending'])
+        ->name('reviews.restaurants.to-rate');
+
+    Route::post('/reviews/restaurants', [RestaurantReviewController::class, 'store'])
+        ->name('reviews.restaurants.store');
+});
+
+

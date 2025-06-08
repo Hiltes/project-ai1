@@ -9,8 +9,11 @@
     </section>
     @if(isset($restaurantToReview))
     <div class="bg-yellow-100 text-yellow-800 p-4 rounded-xl shadow mb-6 max-w-4xl mx-auto text-center">
-         Nie zapomnij ocenić swojej wizyty w <strong>{{ $restaurantToReview->name }}</strong>!
-        <a href="{{ route('restaurants.index') }}" class="underline text-yellow-700 ml-2">Wystaw opinię</a>
+         Nie zapomnij ocenić odwiedzonych restauracji!
+        <a href="{{ route('reviews.restaurants.to-rate') }}" class="underline text-yellow-700 ml-2">
+    Wystaw opinię
+</a>
+
     </div>
     @endif
 
@@ -36,6 +39,12 @@
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Twoje recenzje</h3>
                 <p class="text-gray-600 mb-4">Wystaw ocenę zamówionym daniom, które jeszcze nie oceniłeś.</p>
                 <a href="{{ route('reviews.pending') }}" class="text-[#1fa37a] font-medium hover:underline">Oceń dania</a>
+            </div>
+
+                <div class="bg-white p-6 rounded-lg shadow text-left">
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Oceń restauracje</h3>
+                <p class="text-gray-600 mb-4">Podziel się opinią o restauracjach, w których składałeś zamówienia.</p>
+                <a href="{{ route('reviews.restaurants.to-rate') }}" class="text-[#1fa37a] font-medium hover:underline">Oceń restauracje</a>
             </div>
         </div>
     </section>
