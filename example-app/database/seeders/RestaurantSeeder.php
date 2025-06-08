@@ -22,7 +22,9 @@ class RestaurantSeeder extends Seeder
             'address' => 'ul. Jedzenia 3',
             'phone' => '111222333',
             'description' => 'Najlepsze jedzenie w mieście',
+            'type' => 'Kuchnia Polska',
             'is_active' => true,
+            'delivery_fee' => 5.00,
         ]);
 
         Restaurant::create([
@@ -31,7 +33,9 @@ class RestaurantSeeder extends Seeder
             'address' => 'ul. Ryżowa 7',
             'phone' => '222333444',
             'description' => 'Świeże sushi i japońskie specjały.',
+            'type' => 'Sushi',
             'is_active' => true,
+            'delivery_fee' => 8.00,
         ]);
 
         Restaurant::create([
@@ -40,7 +44,9 @@ class RestaurantSeeder extends Seeder
             'address' => 'ul. Soczysta 9',
             'phone' => '333444555',
             'description' => 'Najlepsze burgery w mieście.',
+            'type' => 'Burger',
             'is_active' => true,
+            'delivery_fee' => 6.50,
         ]);
     }
 }

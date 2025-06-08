@@ -12,10 +12,18 @@ class MenuItem extends Model
         'price',
         'restaurant_id',
         'category',
+        'rating',
+        'rating_count',
+        'image',
+
     ];
 
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
+    }
+    public function reviews()
+    {
+        return $this->hasMany(ItemReview::class);
     }
 }

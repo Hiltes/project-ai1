@@ -80,7 +80,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     <x-auth-session-status class="text-center text-sm text-green-600" :status="session('status')" />
 
-    <form wire:submit="login" class="flex flex-col gap-6">
+    <form wire:submit="login" class="flex flex-col gap-4">
         <!-- Email -->
         <flux:input
             wire:model="email"
@@ -90,10 +90,10 @@ new #[Layout('components.layouts.auth')] class extends Component {
             autofocus
             autocomplete="email"
             placeholder="email@example.com"
+            class="border border-black"
         />
-
         <!-- Password -->
-        <div class="relative">
+        <div class="relative ">
             <flux:input
                 wire:model="password"
                 :label="__('Hasło')"
@@ -102,19 +102,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 autocomplete="current-password"
                 :placeholder="__('Hasło')"
                 viewable
+                class="border border-black"
             />
-
-            @if (Route::has('password.request'))
-                <flux:link class="absolute end-0 top-0 text-sm text-blue-600 hover:underline" :href="route('password.request')" wire:navigate>
-                    {{ __('Nie pamiętasz hasła?') }}
-                </flux:link>
-            @endif
         </div>
 
-        <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Zapamiętaj mnie')" />
-
-        <flux:button variant="primary" type="submit" class="w-full px-4 py-2 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
+        <flux:button variant="primary" type="submit" class="w-full px-4 py-2 mt-6 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
             {{ __('Zaloguj się') }}
         </flux:button>
     </form>

@@ -13,6 +13,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\TotpController;
+use App\Http\Controllers\OrderController;
+use App\Http\Middleware\EnsureTotpIsVerified;
+use App\Http\Controllers\SalesController;
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
 Route::view('/test-404', 'errors.404');
@@ -54,7 +58,6 @@ Volt::route('/reset-password', 'auth.reset-password')->middleware('guest')->name
 Volt::route('/verify-email', 'auth.verify-email')->middleware('auth')->name('verification.notice');
 Volt::route('/confirm-password', 'auth.confirm-password')->middleware('auth')->name('password.confirm');
 
-
 // Autoryzacja użytkowników:
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -78,8 +81,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin/orders/index', 'admin.orders.index')->name('admin.orders.index');
     Route::view('/admin/orders/edit', 'admin.orders.edit')->name('admin.orders.edit');
     Route::view('/admin/orders/show', 'admin.orders.show')->name('admin.orders.show');
-
-
 });
 
 
@@ -94,6 +95,9 @@ Route::resource('admin/menu_items', MenuItemController::class)
 Route::resource('admin/orders', AdminOrderController::class)->names('admin.orders');
 
 // Ustawienia (Livewire + Volt)
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('sales', [SalesController::class, 'index'])->name('admin.sales.index');
+});
 Route::middleware(['auth'])->group(function () {
     Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -135,6 +139,8 @@ Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, C
 Route::get('/items', [MenuItemController::class, 'index2'])->name('items.index');
 Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('items.show');
 
+// Routing do wyszukiwarki restauracji
+Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
 
 // Routing do wyszukiwarki restauracji
 Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
@@ -157,6 +163,3 @@ Route::get('/customer', [CustomerController::class, 'index'])
 // Routing do rankingu dań
 
 Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
-
-
-
