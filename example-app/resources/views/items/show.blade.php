@@ -7,6 +7,19 @@
             </div>
 
             <div class="bg-white shadow-xl rounded-2xl p-8 space-y-6">
+
+                {{-- Obrazek dania  --}}
+                <div class="w-full h-80 rounded-xl overflow-hidden bg-gray-100">
+                    @if ($menuItem->image)
+                        <img src="{{ asset('storage/' . $menuItem->image) }}" alt="{{ $menuItem->name }}"
+                            class="object-cover w-full h-full">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center text-gray-400">
+                            brak zdjęcia
+                        </div>
+                    @endif
+                </div>
+
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-semibold text-emerald-800">{{ $menuItem->name }}</h2>
 
@@ -61,7 +74,9 @@
                 </a>
                 <a href="{{ route('items.ranking') }}"
                     class="px-2 inline-flex items-center text-emerald-700 hover:text-emerald-900 font-medium text-sm hover:underline transition">
-                       Ranking dań
+
+                    Ranking dań
+
                 </a>
             </div>
 

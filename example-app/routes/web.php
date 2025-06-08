@@ -135,9 +135,8 @@ require __DIR__.'/auth.php';
 
 
 
-// Routing do rankingu dań
-
 Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
 
 
 Route::get('/totp', [TotpController::class, 'show'])->name('totp.show');
