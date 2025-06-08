@@ -21,6 +21,11 @@
                 <a href="{{ route('admin.users.index') }}" class="text-[#1fa37a] font-medium hover:underline">Przejdź do zardządzania użytkownikami</a>
             </div>
             <div class="bg-white p-6 rounded-lg shadow text-left">
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Zarządzanie zamówieniami</h3>
+                <p class="text-gray-600 mb-4">Zarządzanie wszystkimi zamówieniami</p>
+                <a href="{{ route('admin.orders.index') }}" class="text-[#1fa37a] font-medium hover:underline">Przejdź do zamówień</a>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow text-left">
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Ustawienia profilu</h3>
                 <p class="text-gray-600 mb-4">Edytuj swoje dane osobowe i dane kontaktowe.</p>
                 <a href="{{ route('profile.edit') }}" class="text-[#1fa37a] font-medium hover:underline">Edytuj Profil</a>
