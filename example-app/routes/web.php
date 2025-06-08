@@ -134,6 +134,11 @@ Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaur
 require __DIR__.'/auth.php';
 
 
+
+Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+
+
 Route::get('/totp', [TotpController::class, 'show'])->name('totp.show');
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 
@@ -141,3 +146,4 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/customer', [CustomerController::class, 'index'])
     ->middleware(['auth', 'role:customer'])
     ->name('customer.dashboard');
+

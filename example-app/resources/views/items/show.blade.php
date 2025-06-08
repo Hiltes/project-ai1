@@ -7,14 +7,30 @@
             </div>
 
             <div class="bg-white shadow-xl rounded-2xl p-8 space-y-6">
+
+                {{-- Obrazek dania  --}}
+                <div class="w-full h-80 rounded-xl overflow-hidden bg-gray-100">
+                    @if ($menuItem->image)
+                        <img src="{{ asset('storage/' . $menuItem->image) }}" alt="{{ $menuItem->name }}"
+                            class="object-cover w-full h-full">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center text-gray-400">
+                            brak zdjęcia
+                        </div>
+                    @endif
+                </div>
+
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-semibold text-emerald-800">{{ $menuItem->name }}</h2>
 
                     <div class="flex items-center space-x-2">
                         <div class="flex items-center text-yellow-400">
                             @for ($i = 1; $i <= 5; $i++)
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ $i <= round($menuItem->rating) ? '' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5 {{ $i <= round($menuItem->rating) ? '' : 'text-gray-300' }}"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
                                 </svg>
                             @endfor
                         </div>
@@ -45,7 +61,7 @@
 
                 <div class="pt-4">
                     <a href="#"
-                       class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition duration-200 font-semibold shadow-sm">
+                        class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition duration-200 font-semibold shadow-sm">
                         Dodaj do koszyka
                     </a>
                 </div>
@@ -53,8 +69,12 @@
 
             <div class="mt-6">
                 <a href="{{ route('items.index') }}"
-                   class="inline-flex items-center text-emerald-700 hover:text-emerald-900 font-medium text-sm hover:underline transition">
-                    ← Powrót do listy dań
+                    class="inline-flex items-center text-emerald-700 hover:text-emerald-900 font-medium text-sm hover:underline transition">
+                    Wyszukiwarka dań
+                </a>
+                <a href="{{ route('items.ranking') }}"
+                    class="px-2 inline-flex items-center text-emerald-700 hover:text-emerald-900 font-medium text-sm hover:underline transition">
+                    Ranking dań
                 </a>
             </div>
         </div>

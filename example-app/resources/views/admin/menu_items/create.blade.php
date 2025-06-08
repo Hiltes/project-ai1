@@ -11,6 +11,7 @@
 
         <section class="max-w-7xl mx-auto px-6 py-6 text-left">
             <form method="POST" action="{{ route('admin.menu_items.store') }}"
+                  enctype="multipart/form-data"
                   class="bg-white shadow-md rounded-2xl p-8 space-y-6">
                 @csrf
 
@@ -19,6 +20,7 @@
                     <input id="name" name="name" type="text" value="{{ old('name') }}" required
                            class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
                                   focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+                    @error('name')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
@@ -26,6 +28,7 @@
                     <textarea id="description" name="description" rows="4"
                               class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
                                      focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">{{ old('description') }}</textarea>
+                    @error('description')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
@@ -33,6 +36,7 @@
                     <input id="price" name="price" type="number" step="0.01" value="{{ old('price') }}" required
                            class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
                                   focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+                    @error('price')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
@@ -42,12 +46,12 @@
                                    focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
                         <option value="">-- wybierz restaurację --</option>
                         @foreach($restaurants as $rest)
-                            <option value="{{ $rest->id }}"
-                                {{ old('restaurant_id') == $rest->id ? 'selected' : '' }}>
+                            <option value="{{ $rest->id }}" {{ old('restaurant_id') == $rest->id ? 'selected' : '' }}>
                                 {{ $rest->name }}
                             </option>
                         @endforeach
                     </select>
+                    @error('restaurant_id')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
@@ -57,11 +61,18 @@
                                    focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
                         <option value="">-- wybierz kategorię --</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat }}" {{ old('category') == $cat ? 'selected' : '' }}>
-                                {{ $cat }}
-                            </option>
+                            <option value="{{ $cat }}" {{ old('category') == $cat ? 'selected' : '' }}>{{ $cat }}</option>
                         @endforeach
                     </select>
+                    @error('category')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-800">Obrazek (500×500px, JPG)</label>
+                    <input id="image" name="image" type="file" accept="image/jpeg"
+                           class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
+                                  focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+                    @error('image')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="text-center">
