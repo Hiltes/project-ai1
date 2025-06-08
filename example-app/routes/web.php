@@ -13,7 +13,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\AdminRestaurantController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\TotpController;
 use App\Http\Controllers\OrderController;
@@ -192,3 +191,15 @@ Route::get('/customer', [CustomerController::class, 'index'])
 // Routing do rankingu dań
 
 Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+
+use App\Http\Controllers\ReviewController;
+
+Route::middleware(['auth'])->group(function () {
+    // Wyświetla listę pozycji do oceny
+    Route::get('/reviews/pending', [ReviewController::class, 'pending'])
+        ->name('reviews.pending');
+    // Obsługa wysłania oceny
+    Route::post('/reviews', [ReviewController::class, 'store'])
+        ->name('reviews.store');
+});

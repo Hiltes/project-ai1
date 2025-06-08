@@ -12,10 +12,10 @@
          Nie zapomnij ocenić swojej wizyty w <strong>{{ $restaurantToReview->name }}</strong>!
         <a href="{{ route('restaurants.index') }}" class="underline text-yellow-700 ml-2">Wystaw opinię</a>
     </div>
-	@endif
+    @endif
 
-     <section class="max-w-7xl mx-auto px-6 py-6">
-        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+    <section class="max-w-7xl mx-auto px-6 py-6">
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             <div class="bg-white p-6 rounded-lg shadow text-left">
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Zamówienia</h3>
                 <p class="text-gray-600 mb-4">Sprawdź historię i status swoich zamówień.</p>
@@ -28,11 +28,15 @@
             </div>
             <div class="bg-white p-6 rounded-lg shadow text-left">
                 <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Weryfikacja 2-etapowa</h3>
-                <p class="text-gray-600 mb-4">Dodaj weryfikację 2-etapową przy logowaniu</p>
+                <p class="text-gray-600 mb-4">Dodaj weryfikację 2-etapową przy logowaniu.</p>
                 <a href="{{ route('totp.show') }}" class="text-[#1fa37a] font-medium hover:underline">Dodaj weryfikację</a>
+            </div>
+       
+            <div class="bg-white p-6 rounded-lg shadow text-left">
+                <h3 class="text-xl font-bold mb-2 text-[#1fa37a]">Twoje recenzje</h3>
+                <p class="text-gray-600 mb-4">Wystaw ocenę zamówionym daniom, które jeszcze nie oceniłeś.</p>
+                <a href="{{ route('reviews.pending') }}" class="text-[#1fa37a] font-medium hover:underline">Oceń dania</a>
             </div>
         </div>
     </section>
 </x-layouts.app>
-
-
