@@ -38,9 +38,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
             $this->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) {
@@ -53,63 +50,69 @@ new #[Layout('components.layouts.auth')] class extends Component {
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        if ($status != Password::PasswordReset) {
+        if ($status != Password::PASSWORD_RESET) {
             $this->addError('email', __($status));
-
             return;
         }
 
         Session::flash('status', __($status));
 
-        $this->redirectRoute('login', navigate: true);
+        // Zmienione z `redirectRoute('login')` na konkretną stronę
+        $this->redirect('/restaurant', navigate: true);
     }
-}; ?>
+};
+?>
 
-<div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Reset password')" :description="__('Please enter your new password below')" />
+<div class="bg-white p-8 rounded-lg shadow-md flex flex-col gap-6">
+    <x-auth-header :title="__('Resetuj hasło')" :description="__('Wprowadź nowe hasło i potwierdź')" />
 
-    <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+    <x-auth-session-status class="text-center text-sm text-green-600" :status="session('status')" />
 
     <form wire:submit="resetPassword" class="flex flex-col gap-6">
-        <!-- Email Address -->
+        <!-- Email -->
         <flux:input
             wire:model="email"
-            :label="__('Email')"
+            :label="__('Adres e-mail')"
             type="email"
             required
             autocomplete="email"
+            placeholder="email@example.com"
+            class="border border-black"
         />
 
         <!-- Password -->
         <flux:input
             wire:model="password"
-            :label="__('Password')"
+            :label="__('Nowe hasło')"
             type="password"
             required
             autocomplete="new-password"
-            :placeholder="__('Password')"
+            placeholder="********"
             viewable
+            class="border border-black"
         />
 
         <!-- Confirm Password -->
         <flux:input
             wire:model="password_confirmation"
-            :label="__('Confirm password')"
+            :label="__('Powtórz hasło')"
             type="password"
             required
             autocomplete="new-password"
-            :placeholder="__('Confirm password')"
+            placeholder="********"
             viewable
+            class="border border-black"
         />
 
-        <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full">
-                {{ __('Reset password') }}
-            </flux:button>
-        </div>
+        <flux:button variant="primary" type="submit" class="w-full px-4 py-2 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
+            {{ __('Zresetuj hasło') }}
+        </flux:button>
     </form>
+
+    <div class="text-center text-sm text-zinc-600 mt-4">
+        {{ __('Masz już hasło?') }}
+        <flux:link :href="route('login')" wire:navigate class="text-[#1fa37a] hover:underline">
+            {{ __('Zaloguj się') }}
+        </flux:link>
+    </div>
 </div>

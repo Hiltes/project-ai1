@@ -41,7 +41,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     <x-auth-header :title="__('Zarejestruj się')" :description="__('Utwórz nowe konto w serwisie')" />
 
-    <form wire:submit="register" class="flex flex-col gap-6">
+    <form wire:submit="register" class="flex flex-col gap-2">
 
         <flux:input
             wire:model="name"
@@ -50,6 +50,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
             required
             autocomplete="name"
             placeholder="Jan Kowalski"
+            class="border border-black"
+
         />
 
         <flux:input
@@ -59,6 +61,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             required
             autocomplete="email"
             placeholder="email@example.com"
+            class="border border-black"
         />
 
         <flux:input
@@ -68,6 +71,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             required
             autocomplete="new-password"
             placeholder="******"
+            class="border border-black"
         />
 
         <flux:input
@@ -77,9 +81,10 @@ new #[Layout('components.layouts.auth')] class extends Component {
             required
             autocomplete="new-password"
             placeholder="******"
+            class="border border-black"
         />
 
-        <flux:button type="submit" variant="primary" class="w-full px-4 py-2 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
+        <flux:button type="submit" variant="primary" class="w-full px-4 py-2 mt-4 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
             {{ __('Zarejestruj się') }}
         </flux:button>
     </form>
