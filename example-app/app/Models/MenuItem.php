@@ -15,6 +15,7 @@ class MenuItem extends Model
         'rating',
         'rating_count',
         'image',
+
     ];
 
     public function restaurant()

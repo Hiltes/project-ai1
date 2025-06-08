@@ -67,16 +67,19 @@
                 </div>
             </div>
 
-            <div class="mt-6">
+            <div class="mt-6 ">
                 <a href="{{ route('items.index') }}"
                     class="inline-flex items-center text-emerald-700 hover:text-emerald-900 font-medium text-sm hover:underline transition">
                     Wyszukiwarka dań
                 </a>
                 <a href="{{ route('items.ranking') }}"
                     class="px-2 inline-flex items-center text-emerald-700 hover:text-emerald-900 font-medium text-sm hover:underline transition">
+
                     Ranking dań
+
                 </a>
             </div>
+
         </div>
     </main>
 </x-layouts.app>

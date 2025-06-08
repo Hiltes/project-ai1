@@ -17,6 +17,7 @@
                             #{{ $index + 1 }}
                         </div>
 
+
                         {{-- Nazwa + zdjęcie --}}
                         <div class="col-span-5 md:col-span-4 flex items-center gap-4">
                             {{-- Miniaturka --}}
@@ -58,7 +59,9 @@
                             {{ number_format($item->price, 2) }} zł
                         </div>
 
+
                         {{-- Desktop rating --}}
+
                         <div class="hidden md:col-span-2 md:block text-sm text-gray-700 space-y-1">
                             <div>
                                 <span class="font-medium text-emerald-700">Ocena:</span>
