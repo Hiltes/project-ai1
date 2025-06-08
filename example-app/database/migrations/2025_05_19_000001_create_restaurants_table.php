@@ -25,6 +25,8 @@ return new class extends Migration
 
             $table->boolean('is_active')->default(true);
 
+            $table->decimal('delivery_fee', 8, 2)->default(0);
+
             $table->timestamps();
 
             $table->index('owner_id');

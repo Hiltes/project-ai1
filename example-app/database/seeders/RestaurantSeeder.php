@@ -24,6 +24,7 @@ class RestaurantSeeder extends Seeder
             'description' => 'Najlepsze jedzenie w mieście',
             'type' => 'Kuchnia Polska',
             'is_active' => true,
+            'delivery_fee' => 5.00,
         ]);
 
         Restaurant::create([
@@ -34,6 +35,7 @@ class RestaurantSeeder extends Seeder
             'description' => 'Świeże sushi i japońskie specjały.',
             'type' => 'Sushi',
             'is_active' => true,
+            'delivery_fee' => 8.00,
         ]);
 
         Restaurant::create([
@@ -44,6 +46,7 @@ class RestaurantSeeder extends Seeder
             'description' => 'Najlepsze burgery w mieście.',
             'type' => 'Burger',
             'is_active' => true,
+            'delivery_fee' => 6.50,
         ]);
     }
 }

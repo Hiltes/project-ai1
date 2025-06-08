@@ -9,6 +9,21 @@ class MenuItemSeeder extends Seeder
 {
     public function run()
     {
+        MenuItem::create([
+            'name' => 'Pizza Margherita',
+            'description' => 'Klasyczna pizza z mozzarellą',
+            'price' => 24.99,
+            'restaurant_id' => 1,
+            'category' => 'Pizza',
+        ]);
+
+        MenuItem::create([
+            'name' => 'Burger Wołowy',
+            'description' => 'Wołowina, sałata, sos',
+            'price' => 29.50,
+            'restaurant_id' => 3,
+            'category' => 'Fast Food',
+        ]);
         $items = [
             // Burgery
             ['name' => 'Burger Classic', 'desc' => 'Wołowina, ser, ogórek, ketchup', 'price' => 28.99, 'cat' => 'Fast Food', 'img' => 'burger-classic.jpg'],
