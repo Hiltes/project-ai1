@@ -27,7 +27,7 @@
                         @foreach ($activeOrders as $order)
                             <div class="p-6 bg-white rounded shadow">
                                 <div class="flex justify-between items-center mb-4">
-                                    <h3 class="text-xl font-semibold text-emerald-800">Zamówienie #{{ $order->id }} - {{ $order->restaurant->name ?? 'Brak restauracji' }}</h3>
+                                    <h3 class="text-xl font-semibold text-emerald-800">Zamówienie - {{ $order->restaurant->name ?? 'Brak restauracji' }}</h3>
                                     <span class="text-sm font-medium text-gray-600">{{ $order->created_at->format('d.m.Y H:i') }}</span>
                                 </div>
 
@@ -60,7 +60,7 @@
                         @foreach ($pastOrders as $order)
                             <div class="p-6 bg-white rounded shadow">
                                 <div class="flex justify-between items-center mb-4">
-                                    <h3 class="text-xl font-semibold text-emerald-800">Zamówienie #{{ $order->id }} - {{ $order->restaurant->name ?? 'Brak restauracji' }}</h3>
+                                    <h3 class="text-xl font-semibold text-emerald-800">Zamówienie - {{ $order->restaurant->name ?? 'Brak restauracji' }}</h3>
                                     <span class="text-sm font-medium text-gray-600">{{ $order->created_at->format('d.m.Y H:i') }}</span>
                                 </div>
 

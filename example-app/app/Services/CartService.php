@@ -26,6 +26,7 @@ class CartService
         if (!isset($cart['restaurants'][$restaurantId])) {
             $cart['restaurants'][$restaurantId] = [
                 'restaurant_name' => $item->restaurant->name,
+                'delivery_fee' => $item->restaurant->delivery_fee,
                 'items' => []
             ];
         }
@@ -87,6 +88,7 @@ class CartService
             foreach ($restaurant['items'] as $item) {
                 $sum += $item['price'] * $item['quantity'];
             }
+            $sum += $restaurant['delivery_fee'] ?? 0;
         }
 
         return $sum;

@@ -46,11 +46,17 @@
                             <div class="mt-4 text-right font-semibold">
                                 Suma dla tej restauracji: {{ number_format(array_reduce($restaurant['items'], fn($carry, $item) => $carry + ($item['price'] * $item['quantity']), 0), 2, ',', ' ') }} zł
                             </div>
+                            <div class="mt-1 text-right text-gray-600">
+                                Opłata za dowóz: {{ number_format($restaurant['delivery_fee'] ?? 0, 2, ',', ' ') }} zł
+                            </div>
                         </div>
                     @endforeach
 
                     <div class="mt-6 text-right font-bold text-xl">
                         Suma całkowita: {{ number_format($total, 2, ',', ' ') }} zł
+                    </div>
+                    <div class="mt-1 text-right text-gray-600">
+                        W tym za dostawe: {{ number_format(array_sum(array_map(fn($r) => $r['delivery_fee'] ?? 0, $cart['restaurants'])), 2, ',', ' ') }} zł
                     </div>
 
                     <div class="flex justify-end space-x-4 mt-6">

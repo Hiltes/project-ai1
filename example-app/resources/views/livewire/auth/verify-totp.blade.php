@@ -53,6 +53,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             required
             placeholder="123456"
             autofocus
+            class="border border-black"
         />
 
         <flux:button variant="primary" type="submit" class="w-full px-4 py-2 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">

@@ -7,6 +7,18 @@
             </div>
 
             <div class="bg-white shadow rounded-2xl p-6 space-y-6">
+
+                {{-- Zdjęcie dania --}}
+                <div class="w-full h-64 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+                    @if($menuItem->image)
+                        <img src="{{ asset('storage/' . $menuItem->image) }}"
+                             alt="{{ $menuItem->name }}"
+                             class="object-cover w-full h-full">
+                    @else
+                        <div class="text-gray-400 text-sm">Brak zdjęcia</div>
+                    @endif
+                </div>
+
                 <div>
                     <h2 class="text-2xl font-semibold text-emerald-800">{{ $menuItem->name }}</h2>
                 </div>
