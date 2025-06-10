@@ -134,11 +134,12 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 });
 
 // Koszyk
-Route::prefix('cart')->group(function () {
+Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/add/{menuItemId}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/remove/{restaurantId}/{menuItemId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/clear', [CartController::class, 'clear'])->name('cart.clear');
-    Route::get('/', [CartController::class, 'show'])->name('cart.show');
+    Route::patch('/update/{restaurantId}/{menuItemId}', [CartController::class, 'update'])->name('cart.update');
+    Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 });
 
 Route::middleware(['auth'])->group(function () {
