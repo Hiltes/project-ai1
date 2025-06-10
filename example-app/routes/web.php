@@ -180,10 +180,6 @@ require __DIR__.'/auth.php';
 
 
 Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
-
-
-
-Route::get('/totp', [TotpController::class, 'show'])->name('totp.show');
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 
 
@@ -215,4 +211,19 @@ Route::middleware(['auth'])->group(function () {
         ->name('reviews.restaurants.store');
 });
 
+//Totp
+Route::middleware(['auth'])->group(function () {
+    Route::get('/settings/totp', [TotpController::class, 'show'])->name('totp.show');
+    Route::post('/settings/totp/enable', [TotpController::class, 'enable'])->name('totp.enable');
+    Route::delete('/settings/totp/disable', [TotpController::class, 'disable'])->name('totp.disable');
+});
 
+Route::middleware(['auth', EnsureTotpIsVerified::class])->group(function () {
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+});
+
+Volt::route('/verify-totp', 'auth.verify-totp')
+    ->name('totp.verify')
+    ->middleware('web');
+
+Route::get('/totp', [TotpController::class, 'show'])->name('totp.show');
