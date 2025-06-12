@@ -86,20 +86,20 @@ Przykładowi użytkownicy aplikacji:
 ![Strona główna](./docs-img/zarzadzanieZamowieniami.png)
 *Zarządzanie zamówieniami*
 
-![Strona główna](./docs-img/dania CRUD.png)
+![Strona główna](./docs-img/daniaCRUD.png)
 *Zarządzanie daniami*
 
-![Strona główna](./docs-img/przeglodanie dan przez uzytkownika niezalogowanego.png)
+![Strona główna](./docs-img/przeglodaniedan.png)
 *Przeglądarka dań*
 
-![Strona główna](./docs-img/ranking najlepszych dan.png)
+![Strona główna](./docs-img/rankingnajlepszychdan.png)
 *Ranking Najlepiej ocenianych dań*
 
 
-![Strona główna](./docs-img/użytkownik może wystawić ocenę .png)
+![Strona główna](./docs-img/ocenadania.png)
 *Wystawianie opinni o daniach*
 
 
-![Strona główna](./docs-img/Wyswietlanie szczegolow danego dania dla uzytkownika niezalogowanego,srednia gwiazdek.png)
+![Strona główna](./docs-img/Wyswietlanieszczegolowdania.png)
 *Wyświetlanie szczegółów wybranego dania*
 
