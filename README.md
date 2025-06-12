@@ -107,3 +107,14 @@ Przykładowi użytkownicy aplikacji:
 ![Strona główna](./docs-img/Wyswietlanieszczegolowdania.png)
 *Wyświetlanie szczegółów wybranego dania*
 
+![Strona główna](./docs-img/informacjeoRestauracji.png)
+*Wyświetlanie informacji o wybranej restauracji*
+
+![Strona główna](./docs-img/przegladarkaRestauracji.png)
+*Przeglądarka restauracji*
+
+![Strona główna](./docs-img/zarzadzanieRestauracjami.png)
+*Zarządzanie restauracjami*
+
+![Strona główna](./docs-img/ocenaRestauracji.png)
+*Wystawianie opinii o restauracji*
