@@ -61,5 +61,27 @@
                 </div>
             </div>
         </div>
+
+        @if (session('success'))
+    <div class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded-xl shadow-lg z-50">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-3 rounded-xl shadow-lg z-50">
+        {{ session('error') }}
+    </div>
+@endif
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('[class*="fixed top-4 left-1/2"]').forEach(el => {
+            el.style.transition = 'opacity 0.5s ease-out';
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 500);
+        });
+    }, 3000);
+</script>
+
     </main>
 </x-layouts.app>

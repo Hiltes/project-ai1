@@ -14,16 +14,6 @@
             @csrf
             @method('PUT')
 
-            {{-- Pokaż błędy walidacji --}}
-            @if ($errors->any())
-                <div class="text-red-600">
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-800">Nazwa restauracji</label>

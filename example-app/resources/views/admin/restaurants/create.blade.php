@@ -12,28 +12,6 @@
             @csrf
             @method('POST')
 
-            @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            @if ($errors->any())
-                <div class="text-red-600">
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-800">Nazwa restauracji *</label>
                 <input id="name" name="name" type="text" value="{{ old('name') }}" required
@@ -100,23 +78,4 @@
             </div>
         </form>
     </main>
-
-    @push('scripts')
-        <script>
-            document.getElementById('restaurantForm').addEventListener('submit', function(e) {
-                
-                const name = document.getElementById('name').value.trim();
-                const address = document.getElementById('address').value.trim();
-                const type = document.getElementById('type').value;
-                
-                if (!name || !address || !type) {
-                    e.preventDefault();
-                    alert('Proszę wypełnić wszystkie wymagane pola oznaczone *');
-                    return false;
-                }
-                
-                return true;
-            });
-        </script>
-    @endpush
 </x-layouts.app>
