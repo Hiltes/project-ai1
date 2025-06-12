@@ -197,7 +197,7 @@ Przykładowi użytkownicy aplikacji:
 ![Tworzenie nowego użytkownika](./docs-img/TworzenieNowegoUzytkownika.png)  
 *Formularz tworzenia nowego użytkownika (CRUD – Create)*
 
-![Edycja danych użytkownika](./docs-img/EdytyjDaneUzytkownika.png)  
+![Edycja danych użytkownika](./docs-img/EdytujDaneUzytkownika.png)  
 *Formularz edycji danych użytkownika (CRUD – Update)*
 
 ![Szczegóły użytkownika](./docs-img/SzczegolyUzytkownika.png)  
