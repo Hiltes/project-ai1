@@ -25,13 +25,27 @@ new #[Layout('components.layouts.auth')] class extends Component {
         $this->validate();
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        $user = \App\Models\User::where('email', $this->email)->first();
+
+        if (! $user) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => 'Nie znaleziono użytkownika o podanym adresie e-mail.',
             ]);
         }
+
+        if (! \Illuminate\Support\Facades\Hash::check($this->password, $user->password)) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'password' => 'Nieprawidłowe hasło.',
+            ]);
+        }
+
+        Auth::login($user, $this->remember);
+        RateLimiter::clear($this->throttleKey());
+        Session::regenerate();
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
@@ -73,6 +87,15 @@ new #[Layout('components.layouts.auth')] class extends Component {
     {
         return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Podaj adres e-mail.',
+            'email.email' => 'Wpisz poprawny adres e-mail.',
+            'password.required' => 'Podaj hasło.',
+        ];
+    }
 }; ?>
 
 <div class="bg-white p-8 rounded-lg shadow-md flex flex-col gap-6">
@@ -90,7 +113,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             autofocus
             autocomplete="email"
             placeholder="email@example.com"
-            class="border border-black"
+            class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 text-base shadow-sm focus:bg-white transition"
         />
         <!-- Password -->
         <div class="relative ">
@@ -102,7 +125,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 autocomplete="current-password"
                 :placeholder="__('Hasło')"
                 viewable
-                class="border border-black"
+                class="!text-gray-900 mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 text-base shadow-sm focus:bg-white transition"
             />
         </div>
 
@@ -112,7 +135,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     </form>
 
     @if (Route::has('register'))
-        <div class="text-center text-sm text-zinc-600 mt-4">
+        <div class="text-center text-sm text-zinc-700 mt-4">
             {{ __('Nie masz konta?') }}
             <flux:link :href="route('register')" wire:navigate class="text-[#1fa37a] hover:underline">
                 {{ __('Zarejestruj się') }}

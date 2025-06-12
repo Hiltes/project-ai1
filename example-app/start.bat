@@ -15,6 +15,9 @@ IF NOT EXIST .env (
 echo === Generowanie APP_KEY ===
 call php artisan key:generate
 
+echo === Tworzenie dowiązania storage ===
+call php artisan storage:link
+
 echo === Migracja i seedy ===
 call php artisan migrate:fresh --seed
 
