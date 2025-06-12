@@ -13,7 +13,7 @@ Platforma do zamawiania jedzenia do domu
 
 ---
 
-### Zespół X
+### Zespół G4
 
 | Profil | Rola |
 | ------ | ------ |
@@ -36,10 +36,15 @@ Panel Klienta
 * Dokonywanie zakupów - klient może przeglądać menu restauracji, dodawać produkty do koszyka
 * Wyliczanie kosztów dostawy - w momencie składania zamówienia, system automatycznie oblicza koszt dostawy na podstawie wybranych restauracji
 * Historia zakupów - klient może przeglądać historię swoich wcześniejszych oraz aktualnych zamówień
+* Przeglądanie dostępnych dań z różnych restauracji
+* Wyświetlanie szczegółów dań z różnych restauracji
+* Ranking najlepszych potraw z tego miesiąca
+* Wystawianie opinii o daniach
 
 Panel Admina
 * Statystyki sprzedaży - możliwość przeglądania danych statystycznych dotyczących sprzedaży, takich jak liczba zamówień, przychody, najczęściej wybierane produkty itp.
 * Pełna obsługa CRUD zasobu zamówień - możliwość tworzenia, odczytu, edytowania i usuwania zamówień.
+* Pełna obsługa CRUD zasobu dań - możliwość tworzenia, odczytu, edytowania i usuwania zamówień.
 
 ### Narzędzia i technologie
 * technologia 1, wersja ...
@@ -59,8 +64,7 @@ Umieścić komendy z start.bat
 ```
 
 Przykładowi użytkownicy aplikacji:
-* administrator: jan@email.com 1234
-* użytkownik: anna@email.com 1234
+* administrator: anna@email.com password
 * ...
 * ...
 
@@ -81,3 +85,21 @@ Przykładowi użytkownicy aplikacji:
 
 ![Strona główna](./docs-img/zarzadzanieZamowieniami.png)
 *Zarządzanie zamówieniami*
+
+![Strona główna](./docs-img/dania CRUD.png)
+*Zarządzanie daniami*
+
+![Strona główna](./docs-img/przeglodanie dan przez uzytkownika niezalogowanego.png)
+*Przeglądarka dań*
+
+![Strona główna](./docs-img/ranking najlepszych dan.png)
+*Ranking Najlepiej ocenianych dań*
+
+
+![Strona główna](./docs-img/użytkownik może wystawić ocenę .png)
+*Wystawianie opinni o daniach*
+
+
+![Strona główna](./docs-img/Wyswietlanie szczegolow danego dania dla uzytkownika niezalogowanego,srednia gwiazdek.png)
+*Wyświetlanie szczegółów wybranego dania*
+
