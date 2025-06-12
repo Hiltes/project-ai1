@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Database\QueryException;
 class AdminRestaurantController extends Controller
 {
     protected $types = [
@@ -48,7 +48,7 @@ class AdminRestaurantController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'address' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:30',
+            'phone' => 'required|string|max:30',
             'type' => ['required', 'string', Rule::in($this->types)],
             'is_active' => 'nullable|boolean',
             'delivery_fee' => 'nullable|numeric|min:0',
@@ -82,7 +82,7 @@ class AdminRestaurantController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'address' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:30',
+            'phone' => 'required|string|max:30',
             'type' => ['required', 'string', Rule::in($this->types)],
             'is_active' => 'nullable|boolean',
             'delivery_fee' => 'nullable|numeric|min:0',
@@ -101,17 +101,28 @@ class AdminRestaurantController extends Controller
         }
     }
 
-    public function destroy(Restaurant $restaurant)
-    {
-        try {
-            $restaurant->delete();
-            return redirect()->route('admin.restaurants.index')
-                ->with('success', 'Restauracja została usunięta pomyślnie.');
-        } catch (\Exception $e) {
-            \Log::error('Błąd podczas usuwania restauracji ID ' . $restaurant->id . ': ' . $e->getMessage());
-            return back()->with('error', 'Wystąpił błąd podczas usuwania restauracji. Szczegóły: ' . $e->getMessage());
+
+public function destroy(Restaurant $restaurant)
+{
+    try {
+        $restaurant->delete();
+
+        return redirect()->route('admin.restaurants.index')
+            ->with('success', 'Restauracja została usunięta.');
+    } catch (QueryException $e) {
+        if ($e->getCode() === '23503') { 
+            return redirect()->back()
+                ->with('error', 'Nie można usunąć restauracji, ponieważ zawiera przypisane dania lub zamówienia.');
         }
+
+        \Log::error('Błąd podczas usuwania restauracji ID ' . $restaurant->id . ': ' . $e->getMessage());
+
+        return redirect()->back()
+            ->with('error', 'Wystąpił błąd podczas usuwania restauracji. Szczegóły: ' . $e->getMessage());
     }
+}
+
+
 
     public function show(Restaurant $restaurant)
     {

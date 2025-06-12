@@ -46,12 +46,14 @@
                               focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
             </div>
 
-            <div>
-                <label for="phone" class="block text-sm font-medium text-gray-800">Telefon</label>
-                <input id="phone" name="phone" type="text" value="{{ old('phone', $restaurant->phone) }}"
-                       class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
-                              focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
-            </div>
+           <div>
+    <label for="phone" class="block text-sm font-medium text-gray-800">Telefon</label>
+    <input id="phone" name="phone" type="text" value="{{ old('phone', $restaurant->phone) }}" required
+           pattern="\d{9}" minlength="9" maxlength="9" title="Wprowadź dokładnie 9 cyfr"
+           class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-base shadow-sm
+                  focus:ring-2 focus:ring-[#1fa37a] focus:border-[#1fa37a] focus:bg-white transition">
+</div>
+
 
             <div>
                 <label for="delivery_fee" class="block text-sm font-medium text-gray-800">Opłata za dostawę (zł)</label>
