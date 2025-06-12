@@ -57,7 +57,7 @@ Route::view('dashboard', 'dashboard')
 Volt::route('/login', 'auth.login')->middleware('guest')->name('login');
 Volt::route('/register', 'auth.register')->middleware('guest')->name('register');
 Volt::route('/forgot-password', 'auth.forgot-password')->middleware('guest')->name('password.request');
-Volt::route('/reset-password', 'auth.reset-password')->middleware('guest')->name('password.reset');
+Volt::route('/reset-password/{token}', 'auth.reset-password')->middleware('guest')->name('password.reset');
 Volt::route('/verify-email', 'auth.verify-email')->middleware('auth')->name('verification.notice');
 Volt::route('/confirm-password', 'auth.confirm-password')->middleware('auth')->name('password.confirm');
 

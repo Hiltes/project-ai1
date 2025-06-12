@@ -60,6 +60,19 @@ new #[Layout('components.layouts.auth')] class extends Component {
         // Zmienione z `redirectRoute('login')` na konkretną stronę
         $this->redirect('/restaurant', navigate: true);
     }
+    public function messages(): array
+    {
+        return [
+            'passwords.user' => 'Nie znaleziono użytkownika o podanym adresie e-mail.',
+            'token.required' => 'Brakuje tokenu resetującego.',
+            'email.required' => 'Podaj adres e-mail.',
+            'email.email' => 'Wpisz poprawny adres e-mail.',
+            'password.required' => 'Podaj nowe hasło.',
+            'password.confirmed' => 'Hasła nie są takie same.',
+            'passwords.token' => 'Ten link do resetowania hasła jest nieprawidłowy lub wygasł.',
+        ];
+    }
+
 };
 ?>
 
@@ -77,7 +90,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             required
             autocomplete="email"
             placeholder="email@example.com"
-            class="border border-black"
+            class="!text-gray-900 mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 text-base shadow-sm focus:bg-white transition"
         />
 
         <!-- Password -->
@@ -89,7 +102,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             autocomplete="new-password"
             placeholder="********"
             viewable
-            class="border border-black"
+            class="!text-gray-900 mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 text-base shadow-sm focus:bg-white transition"
         />
 
         <!-- Confirm Password -->
@@ -101,7 +114,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             autocomplete="new-password"
             placeholder="********"
             viewable
-            class="border border-black"
+            class="!text-gray-900 mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 text-base shadow-sm focus:bg-white transition"
         />
 
         <flux:button variant="primary" type="submit" class="w-full px-4 py-2 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
