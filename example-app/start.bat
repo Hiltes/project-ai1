@@ -4,7 +4,7 @@ cd /d "%~dp0"
 echo === Instalacja zaleznosci PHP ===
 call composer install
 
-echo === Instalacja zależnosci JS ===
+echo === Instalacja zaleznosci JS ===
 call npm install
 
 echo === Tworzenie .env (jesli brak) ===
@@ -15,7 +15,7 @@ IF NOT EXIST .env (
 echo === Generowanie APP_KEY ===
 call php artisan key:generate
 
-echo === Tworzenie dowiązania storage ===
+echo === Tworzenie dowiazania storage ===
 call php artisan storage:link
 
 echo === Migracja i seedy ===
@@ -25,5 +25,5 @@ echo === Uruchamianie backendu i frontend ===
 call composer run dev
 
 echo.
-echo === Aplikacja uruchomiona. Naciśnij dowolny klawisz, aby zamknąć ===
+echo === Aplikacja uruchomiona. Nacisnij dowolny klawisz, aby zamknac ===
 pause >nul

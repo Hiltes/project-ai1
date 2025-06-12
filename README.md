@@ -44,33 +44,80 @@ Panel Klienta
 * Wystawanie opinii o restauracjach
 * Wyświetlanie informacji o restauracjach
 
+
 Panel Admina
 * Statystyki sprzedaży - możliwość przeglądania danych statystycznych dotyczących sprzedaży, takich jak liczba zamówień, przychody, najczęściej wybierane produkty itp.
 * Pełna obsługa CRUD zasobu zamówień - możliwość tworzenia, odczytu, edytowania i usuwania zamówień.
 * Pełna obsługa CRUD zasobu dań - możliwość tworzenia, odczytu, edytowania i usuwania zamówień.
 * Pełna obsługa CRUD zasobu restauracji -  możliwość tworzenia, odczytu, edytowania i usuwania restauracji.
+* Pełna obsługa CRUD zasobu użytkowników - możliwość tworzenia, odczytu, edytowania i usuwania użytkowników.
+* Obsługa ról (admin, customer) – middleware + routing warunkowy.
+
+
+
+Ogólne Funkcjonalności
+* Logowanie i rejestracja użytkownika z walidacją danych.
+* Obsługa resetu hasła z wykorzystaniem tokenu.
+* Obsługa dwuetapowej weryfikacji TOTP (Google Authenticator).
+* Możliwość zmiany hasła i zarządzania swoim profilem.
+* Obsługa widoków błędów HTTP (403, 404, 419, 500)
+
+
+Bezpieczeństwo aplikacji
+* Ochrona przed brute-force (RateLimiter na logowanie)
+* TOTP – dwuetapowa weryfikacja logowania
+* Hasła szyfrowane (bcrypt)
+* Walidacja i komunikaty błędów dostosowane do użytkownika
+* Middleware – zabezpiecza dostęp do zasobów po zalogowaniu
+
+
+# Reset hasła (komenda CLI)
+```
+php artisan password:reset janek@example.com
+```
 
 ### Narzędzia i technologie
-* technologia 1, wersja ...
-* technologia 2, wersja ...
-* ...
-* środowisko 1, wersja ...
-* środowisko 2, wersja ...
-* ...
+* Laravel 11 (backend, framework aplikacji)
+* PHP 8.3
+* Livewire Volt (komponenty frontendowe i interakcja)
+* Tailwind CSS (stylowanie widoków)
+* PostgreSQL
+* spomky-labs/otphp (2FA – TOTP)
 
 ### Uruchomienie aplikacji
 
-Napisać, co trzeba mieć zainstalowane (oraz inne potrzebne dodatkowe informacje).
+composer install
+npm install
 
 ```
-Umieścić komendy z start.bat
+echo === Instalacja zaleznosci PHP ===
+call composer install
+
+echo === Instalacja zaleznosci JS ===
+call npm install
+
+echo === Tworzenie .env (jesli brak) ===
+IF NOT EXIST .env (
+    copy .env.example .env
+)
+
+echo === Generowanie APP_KEY ===
+call php artisan key:generate
+
+echo === Tworzenie dowiazania storage ===
+call php artisan storage:link
+
+echo === Migracja i seedy ===
+call php artisan migrate:fresh --seed
+
+echo === Uruchamianie backendu i frontend ===
+call composer run dev
 
 ```
 
 Przykładowi użytkownicy aplikacji:
-* administrator: anna@email.com password
-* ...
-* ...
+* administrator: anna@example.com password
+* użytkownik: janek@example.com password
 
 ### Baza danych
 
@@ -118,3 +165,46 @@ Przykładowi użytkownicy aplikacji:
 
 ![Strona główna](./docs-img/ocenaRestauracji.png)
 *Wystawianie opinii o restauracji*
+
+
+
+![Strona główna](./docs-img/ocenaRestauracji.png)
+*Wystawianie opinii o restauracji*
+
+
+
+
+
+
+![Logowanie](./docs-img/Logowanie.png)  
+*Formularz logowania z walidacją i komunikatami błędów*
+
+![Rejestracja](./docs-img/Rejestracja.png)  
+*Formularz rejestracji użytkownika z walidacją danych*
+
+![Reset hasła](./docs-img/ResetujHaslo.png)  
+*Formularz resetowania hasła z obsługą tokenów i walidacji*
+
+![Panel administratora](./docs-img/PanelAdministratora.png)  
+*Panel administratora z dostępem do zarządzania zasobami*
+
+![Panel użytkownika](./docs-img/PanelUzytkownika.png)  
+*Panel klienta z dostępem do ustawień i historii zamówień*
+
+![Zarządzanie użytkownikami](./docs-img/ZarzadzanieUzytkownikami.png)  
+*Lista użytkowników z opcją edycji i usuwania (CRUD)*
+
+![Tworzenie nowego użytkownika](./docs-img/TworzenieNowegoUzytkownika.png)  
+*Formularz tworzenia nowego użytkownika (CRUD – Create)*
+
+![Edycja danych użytkownika](./docs-img/EdytyjDaneUzytkownika.png)  
+*Formularz edycji danych użytkownika (CRUD – Update)*
+
+![Szczegóły użytkownika](./docs-img/SzczegolyUzytkownika.png)  
+*Widok szczegółów użytkownika (CRUD – Read)*
+
+![Weryfikacja dwuetapowa (TOTP)](./docs-img/Weryfikacja2etapowa.png)  
+*Widok weryfikacji kodu TOTP (Google Authenticator)*
+
+![Strona błędu 404](./docs-img/StronaBledu.png)  
+*Dedykowany widok błędu HTTP – przykład 404*

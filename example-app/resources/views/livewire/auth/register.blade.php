@@ -99,7 +99,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             required
             autocomplete="new-password"
             placeholder="Powtórz hasło"
-            class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 px-1 text-base shadow-sm focus:bg-white transition"
+            class="mt-1 block w-full rounded-xl border border-gray-300 bg-gray-50 text-base shadow-sm focus:bg-white transition"
         />
 
         <flux:button type="submit" variant="primary" class="w-full px-4 py-2 mt-4 rounded text-white font-medium hover:opacity-90 transition" style="background-color: #1fa37a;">
