@@ -40,11 +40,15 @@ Panel Klienta
 * Wyświetlanie szczegółów dań z różnych restauracji
 * Ranking najlepszych potraw z tego miesiąca
 * Wystawianie opinii o daniach
+* Przeglądanie dostępnych restauracji
+* Wystawanie opinii o restauracjach
+* Wyświetlanie informacji o restauracjach
 
 Panel Admina
 * Statystyki sprzedaży - możliwość przeglądania danych statystycznych dotyczących sprzedaży, takich jak liczba zamówień, przychody, najczęściej wybierane produkty itp.
 * Pełna obsługa CRUD zasobu zamówień - możliwość tworzenia, odczytu, edytowania i usuwania zamówień.
 * Pełna obsługa CRUD zasobu dań - możliwość tworzenia, odczytu, edytowania i usuwania zamówień.
+* Pełna obsługa CRUD zasobu restauracji -  możliwość tworzenia, odczytu, edytowania i usuwania restauracji.
 
 ### Narzędzia i technologie
 * technologia 1, wersja ...
