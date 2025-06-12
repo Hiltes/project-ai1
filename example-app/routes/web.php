@@ -19,6 +19,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Middleware\EnsureTotpIsVerified;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\RestaurantReviewController;
+use App\Http\Controllers\ReviewController;
 
 // Testowe strony błędów
 Route::view('/test-403', 'errors.403');
@@ -48,7 +49,7 @@ Route::get('/panel', function (Request $request) {
     };
 })->middleware('auth')->name('user.panel');
 
-// Dashboard (Volt)
+// Dashboard
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -57,95 +58,97 @@ Route::view('dashboard', 'dashboard')
 Volt::route('/login', 'auth.login')->middleware('guest')->name('login');
 Volt::route('/register', 'auth.register')->middleware('guest')->name('register');
 Volt::route('/forgot-password', 'auth.forgot-password')->middleware('guest')->name('password.request');
-Volt::route('/reset-password/{token}', 'auth.reset-password')->middleware('guest')->name('password.reset');
+Volt::route('/reset-password', 'auth.reset-password')->middleware('guest')->name('password.reset');
 Volt::route('/verify-email', 'auth.verify-email')->middleware('auth')->name('verification.notice');
 Volt::route('/confirm-password', 'auth.confirm-password')->middleware('auth')->name('password.confirm');
 
-// Autoryzacja użytkowników:
-
+// Panel administratora i wszystkie admin-routy
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
 
-
-    //Routing dla CRUD dań
+    // Widoki (blade) – CRUD
     Route::view('/admin/menu_items/create', 'admin.menu_items.create')->name('admin.menu_items.create');
     Route::view('/admin/menu_items/edit', 'admin.menu_items.edit')->name('admin.menu_items.edit');
     Route::view('/admin/menu_items/index', 'admin.menu_items.index')->name('admin.menu_items.index');
     Route::view('/admin/menu_items/show', 'admin.menu_items.show')->name('admin.menu_items.show');
 
-    // CRUD userów
     Route::view('/admin/users/create', 'admin.users.create')->name('admin.users.create');
     Route::view('/admin/users/edit', 'admin.users.edit')->name('admin.users.edit');
     Route::view('/admin/users/index', 'admin.users.index')->name('admin.users.index');
     Route::view('/admin/users/show', 'admin.users.show')->name('admin.users.show');
 
-    // CRUD Restauracji
     Route::view('/admin/restaurants/create', 'admin.restaurants.create')->name('admin.restaurants.create');
     Route::view('/admin/restaurants/edit', 'admin.restaurants.edit')->name('admin.restaurants.edit');
     Route::view('/admin/restaurants/index', 'admin.restaurants.index')->name('admin.restaurants.index');
     Route::view('/admin/restaurants/show', 'admin.restaurants.show')->name('admin.restaurants.show');
 
-    // CRUD zamówień
     Route::view('/admin/orders/create', 'admin.orders.create')->name('admin.orders.create');
-    Route::view('/admin/orders/index', 'admin.orders.index')->name('admin.orders.index');
     Route::view('/admin/orders/edit', 'admin.orders.edit')->name('admin.orders.edit');
+    Route::view('/admin/orders/index', 'admin.orders.index')->name('admin.orders.index');
     Route::view('/admin/orders/show', 'admin.orders.show')->name('admin.orders.show');
 
-});
-
-
-
-    //Podpięcie kontrolera do CRUDA dań
-Route::resource('admin/menu_items', MenuItemController::class)
-     ->names('admin.menu_items');
-
-// Resource controller
+    // Kontrolery (resource)
+    Route::resource('admin/menu_items', MenuItemController::class)->names('admin.menu_items');
     Route::resource('admin/users', UserController::class)->names('admin.users');
+    Route::resource('admin/restaurants', AdminRestaurantController::class)->names('admin.restaurants');
+    Route::resource('admin/orders', AdminOrderController::class)->names('admin.orders');
 
-
-Route::resource('admin/restaurants', AdminRestaurantController::class)
-     ->names('admin.restaurants');
-
-
-// Ustawienia
-
-Route::resource('admin/orders', AdminOrderController::class)->names('admin.orders');
-
-// Ustawienia (Livewire + Volt)
-Route::middleware(['auth', 'role:admin'])->group(function () {
+    // Statystyki sprzedaży
     Route::get('sales', [SalesController::class, 'index'])->name('admin.sales.index');
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/settings/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-});
-
-// Panel admina
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
 });
 
 // Panel klienta
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::view('/customer', 'customer.dashboard')->name('customer.dashboard');
+    Route::get('/customer', [CustomerController::class, 'index'])->name('customer.dashboard');
 });
 
-// Koszyk
+// Ustawienia użytkownika
+Route::middleware(['auth'])->group(function () {
+    Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/settings/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Volt::route('settings/password', 'settings.password')->name('settings.password');
+    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+
+    // TOTP
+    Route::get('/settings/totp', [TotpController::class, 'show'])->name('totp.show');
+    Route::post('/settings/totp/enable', [TotpController::class, 'enable'])->name('totp.enable');
+    Route::delete('/settings/totp/disable', [TotpController::class, 'disable'])->name('totp.disable');
+});
+
+// TOTP weryfikacja
+Route::middleware(['auth', EnsureTotpIsVerified::class])->group(function () {
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+});
+
+Volt::route('/verify-totp', 'auth.verify-totp')->name('totp.verify')->middleware('web');
+
+// Koszyk i zamówienia
 Route::middleware(['auth'])->group(function () {
     Route::post('/add/{menuItemId}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/remove/{restaurantId}/{menuItemId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::patch('/update/{restaurantId}/{menuItemId}', [CartController::class, 'update'])->name('cart.update');
     Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
-});
 
-Route::middleware(['auth'])->group(function () {
     Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+    // Recenzje
+    Route::get('/reviews/pending', [ReviewController::class, 'pending'])->name('reviews.pending');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+    Route::get('/reviews/restaurants/to-rate', [RestaurantReviewController::class, 'pending'])->name('reviews.restaurants.to-rate');
+    Route::post('/reviews/restaurants', [RestaurantReviewController::class, 'store'])->name('reviews.restaurants.store');
 });
+
+// Wyszukiwarka i ranking
+Route::get('/items', [MenuItemController::class, 'index2'])->name('items.index');
+Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('items.show');
+Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
+
+// Restauracje publicznie
+Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
 
 // Testowe dodawanie do koszyka
 Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, CartService $cart) {
@@ -153,72 +156,9 @@ Route::get('/test-add-to-cart/{id}/{quantity?}', function ($id, $quantity = 1, C
     if (!$item) {
         return "Menu item not found";
     }
-
     $cart->add($item, max(1, (int)$quantity));
     return "Added: {$item->name} (Quantity: {$quantity})";
 });
 
-
-// Routing do wyszukiwarki dań
-Route::get('/items', [MenuItemController::class, 'index2'])->name('items.index');
-Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('items.show');
-
-
-
-// Routing do wyszukiwarki restauracji
-Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
-
-
-
+// Laravel Breeze (lub Fortify)
 require __DIR__.'/auth.php';
-
-
-
-Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
-Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-
-
-Route::get('/customer', [CustomerController::class, 'index'])
-    ->middleware(['auth', 'role:customer'])
-    ->name('customer.dashboard');
-// Routing do rankingu dań
-
-Route::get('/ranking', [MenuItemController::class, 'ranking'])->name('items.ranking');
-
-
-use App\Http\Controllers\ReviewController;
-
-Route::middleware(['auth'])->group(function () {
-    // Wyświetla listę pozycji do oceny
-    Route::get('/reviews/pending', [ReviewController::class, 'pending'])
-        ->name('reviews.pending');
-    // Obsługa wysłania oceny
-    Route::post('/reviews', [ReviewController::class, 'store'])
-        ->name('reviews.store');
-});
-
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/reviews/restaurants/to-rate', [RestaurantReviewController::class, 'pending'])
-        ->name('reviews.restaurants.to-rate');
-
-    Route::post('/reviews/restaurants', [RestaurantReviewController::class, 'store'])
-        ->name('reviews.restaurants.store');
-});
-
-//Totp
-Route::middleware(['auth'])->group(function () {
-    Route::get('/settings/totp', [TotpController::class, 'show'])->name('totp.show');
-    Route::post('/settings/totp/enable', [TotpController::class, 'enable'])->name('totp.enable');
-    Route::delete('/settings/totp/disable', [TotpController::class, 'disable'])->name('totp.disable');
-});
-
-Route::middleware(['auth', EnsureTotpIsVerified::class])->group(function () {
-    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
-});
-
-Volt::route('/verify-totp', 'auth.verify-totp')
-    ->name('totp.verify')
-    ->middleware('web');
-
-Route::get('/totp', [TotpController::class, 'show'])->name('totp.show');
