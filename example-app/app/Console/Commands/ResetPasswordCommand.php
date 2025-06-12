@@ -24,5 +24,9 @@ class ResetPasswordCommand extends Command
         $token = Password::createToken($user);
         $this->info("Wygenerowano token resetujący hasło dla: {$user->email}");
         $this->line("Token: {$token}");
+        $this->line("http://127.0.0.1:8000/reset-password/{$token}");
+
     }
 }
+
+// php artisan reset:password janek@example.com
