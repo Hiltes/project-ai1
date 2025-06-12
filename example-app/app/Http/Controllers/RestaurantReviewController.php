@@ -10,12 +10,12 @@ use App\Models\Review;
 
 class RestaurantReviewController extends Controller
 {
-    // Pokaż restauracje, które użytkownik kupił, ale jeszcze nie ocenił
+    
     public function pending()
     {
         $userId = Auth::id();
 
-        // ID restauracji z których coś zamówił
+        
         $restaurantIds = DB::table('orders')
             ->join('order_items', 'orders.id', '=', 'order_items.order_id')
             ->join('menu_items', 'order_items.menu_item_id', '=', 'menu_items.id')
@@ -24,7 +24,7 @@ class RestaurantReviewController extends Controller
             ->unique()
             ->toArray();
 
-        // Restauracje bez opinii użytkownika
+       
         $restaurantsToReview = Restaurant::with('reviews')
             ->whereIn('id', $restaurantIds)
             ->whereDoesntHave('reviews', function ($query) use ($userId) {
@@ -35,7 +35,7 @@ class RestaurantReviewController extends Controller
         return view('reviews.restaurants.pending', compact('restaurantsToReview'));
     }
 
-    // Zapis opinii i aktualizacja średniej + liczby ocen w Restaurant
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -47,13 +47,23 @@ class RestaurantReviewController extends Controller
         $userId = Auth::id();
         $restaurant = Restaurant::findOrFail($request->restaurant_id);
 
-        // Sprawdź, czy już oceniono
+            $hasOrdered = DB::table('orders')
+    ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+    ->join('menu_items', 'order_items.menu_item_id', '=', 'menu_items.id')
+    ->where('orders.user_id', $userId)
+    ->where('menu_items.restaurant_id', $restaurant->id)
+    ->exists();
+
+    if (!$hasOrdered) {
+    return back()->with('error', 'Nie możesz ocenić restauracji, z której nie zamówiłeś.');
+    }
+
         if ($restaurant->reviews()->where('user_id', $userId)->exists()) {
             return back()->with('error', 'Już oceniłeś tę restaurację.');
         }
 
         DB::transaction(function () use ($restaurant, $userId, $request) {
-            // Dodaj opinię
+            
             Review::create([
                 'restaurant_id' => $restaurant->id,
                 'user_id'       => $userId,
@@ -62,7 +72,7 @@ class RestaurantReviewController extends Controller
                 'created_at'    => now(),
             ]);
 
-            // Odśwież średnią ocenę i liczbę opinii
+          
             $stats = $restaurant->reviews()
                 ->selectRaw('COUNT(*) as cnt, AVG(rating) as avg')
                 ->first();

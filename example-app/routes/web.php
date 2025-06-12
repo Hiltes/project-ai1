@@ -169,12 +169,6 @@ Route::get('/items/{menuItem}', [MenuItemController::class, 'show2'])->name('ite
 Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
 
 
-// Routing do wyszukiwarki restauracji
-Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
-
-// Routing do wyszukiwarki restauracji
-Route::get('/restaurant', [RestaurantController::class, 'index'])->name('restaurants.index');
-
 
 require __DIR__.'/auth.php';
 
