@@ -174,12 +174,11 @@ class MenuItemController extends Controller
             'price'         => 'required|numeric|min:0',
             'restaurant_id' => 'required|exists:restaurants,id',
             'category'      => 'required|string|in:' . implode(',', array_map('addslashes', $this->categories)),
-            'image'         => 'nullable|image|mimes:jpeg,jpg|dimensions:width=500,height=500',  // DODANO
+            'image'         => 'nullable|image|mimes:jpeg,jpg|dimensions:width=500,height=500',  
         ]);
 
         // Obsługa zmiany obrazka
         if ($request->hasFile('image')) {
-            // opcjonalnie: usunięcie starego pliku
             if ($menuItem->image) {
                 Storage::disk('public')->delete($menuItem->image);
             }
